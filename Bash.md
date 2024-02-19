@@ -39,3 +39,10 @@ echo "${bar##*/}"  # file.ext
 echo "${bar%/*}"   # path1/path2
 echo "${bar%%/*}"  # path1
 ```
+
+### Zsh
+
+```sh
+setopt transient_rprompt  # show zsh right prompt only on active prompt
+%(5~|%-1~/.../%3~|%~)  # truncate to 1st and last 3 segments if longer than 5
+```

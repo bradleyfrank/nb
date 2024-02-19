@@ -1,0 +1,331 @@
+# Findmnt - Better Way of Finding Mounted Filesystems on Linux (linuxhandbook.com)
+
+<https://linuxhandbook.com/findmnt-command-guide/>
+
+## Description
+
+Learn to use findmnt instead of mount for a more robust and customizable listing of mounted file systems.
+
+## Tags
+
+#mounts #filesystem
+
+## Content
+
+[Skip to main content](#main){.group .sr-only .focus:not-sr-only .focus-within:not-sr-only .outline-none}
+
+[![Linux Handbook](https://linuxhandbook.com/content/images/2021/08/linux-handbook-cover.png){.max-h-9 .w-auto}](https://linuxhandbook.com){.flex-shrink .mr-8 .font-bold .text-lg .text-gray-900 .dark:text-gray-50 .has-logo .lg:min-w-logo brand="" aria-label="Linux Handbook"}
+
+-   [Latest
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/latest/){.group .px-3 .py-1.5 .inline-flex .items-center .font-semibold .text-sm .leading-6 .whitespace-nowrap .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+-   [Bash Series
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/bash/){.group .px-3 .py-1.5 .inline-flex .items-center .font-semibold .text-sm .leading-6 .whitespace-nowrap .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+-   [RHCE Ansible Series
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/ansible/){.group .px-3 .py-1.5 .inline-flex .items-center .font-semibold .text-sm .leading-6 .whitespace-nowrap .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+-   [Proxmox Series
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/proxmox/){.group .px-3 .py-1.5 .inline-flex .items-center .font-semibold .text-sm .leading-6 .whitespace-nowrap .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+-   [Podman Series
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/podman/){.group .px-3 .py-1.5 .inline-flex .items-center .font-semibold .text-sm .leading-6 .whitespace-nowrap .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iZGFyazpoaWRkZW4gdy02IGgtNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xMiAzdjFtMCAxNnYxbTktOWgtMU00IDEySDNtMTUuMzY0IDYuMzY0bC0uNzA3LS43MDdNNi4zNDMgNi4zNDNsLS43MDctLjcwN20xMi43MjggMGwtLjcwNy43MDdNNi4zNDMgMTcuNjU3bC0uNzA3LjcwN00xNiAxMmE0IDQgMCAxMS04IDAgNCA0IDAgMDE4IDB6IiAvPgo8L3N2Zz4=){.dark:hidden .w-6 .h-6}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGRhcms6aW5saW5lIHctNiBoLTYgcmVsYXRpdmUgLXRvcC1weCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTEyIDNjLjEzMiAwIC4yNjMgMCAuMzkzIDBhNy41IDcuNSAwIDAgMCA3LjkyIDEyLjQ0NmE5IDkgMCAxIDEgLTguMzEzIC0xMi40NTR6IiAvPgo8cGF0aCBkPSJNMTcgNGEyIDIgMCAwIDAgMiAyYTIgMiAwIDAgMCAtMiAyYTIgMiAwIDAgMCAtMiAtMmEyIDIgMCAwIDAgMiAtMiIgLz4KPC9zdmc+){.hidden .dark:inline .w-6 .h-6 .relative .-top-px}
+
+[![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0iY3VycmVudENvbG9yIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIGQ9Ik0yMy45NTQgNC41NjljLS44ODUuMzg5LTEuODMuNjU0LTIuODI1Ljc3NSAxLjAxNC0uNjExIDEuNzk0LTEuNTc0IDIuMTYzLTIuNzIzLS45NTEuNTU1LTIuMDA1Ljk1OS0zLjEyNyAxLjE4NC0uODk2LS45NTktMi4xNzMtMS41NTktMy41OTEtMS41NTktMi43MTcgMC00LjkyIDIuMjAzLTQuOTIgNC45MTcgMCAuMzkuMDQ1Ljc2NS4xMjcgMS4xMjRDNy42OTEgOC4wOTQgNC4wNjYgNi4xMyAxLjY0IDMuMTYxYy0uNDI3LjcyMi0uNjY2IDEuNTYxLS42NjYgMi40NzUgMCAxLjcxLjg3IDMuMjEzIDIuMTg4IDQuMDk2LS44MDctLjAyNi0xLjU2Ni0uMjQ4LTIuMjI4LS42MTZ2LjA2MWMwIDIuMzg1IDEuNjkzIDQuMzc0IDMuOTQ2IDQuODI3LS40MTMuMTExLS44NDkuMTcxLTEuMjk2LjE3MS0uMzE0IDAtLjYxNS0uMDMtLjkxNi0uMDg2LjYzMSAxLjk1MyAyLjQ0NSAzLjM3NyA0LjYwNCAzLjQxNy0xLjY4IDEuMzE5LTMuODA5IDIuMTA1LTYuMTAyIDIuMTA1LS4zOSAwLS43NzktLjAyMy0xLjE3LS4wNjcgMi4xODkgMS4zOTQgNC43NjggMi4yMDkgNy41NTcgMi4yMDkgOS4wNTQgMCAxMy45OTktNy40OTYgMTMuOTk5LTEzLjk4NiAwLS4yMDkgMC0uNDItLjAxNS0uNjMuOTYxLS42ODkgMS44LTEuNTYgMi40Ni0yLjU0OGwtLjA0Ny0uMDJ6IiAvPgo8L3N2Zz4=){.w-5 .h-5}](https://twitter.com/linuxhandbook "Twitter"){.[&:nth-child(n_+_7)]:hidden .h-9 .w-9 .flex .items-center .justify-center .flex-shrink-0 .rounded-lg .hover:bg-gray-100 .hover:text-gray-700 .dark:hover:bg-gray-700 .dark:hover:text-gray-300 social-link="" aria-label="Twitter" target="_blank"}
+[![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0iY3VycmVudENvbG9yIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIGQ9Ik0yMy45OTgxIDExLjk5OTFDMjMuOTk4MSA1LjM3MjE2IDE4LjYyNiAwIDExLjk5OTEgMEM1LjM3MjE2IDAgMCA1LjM3MjE2IDAgMTEuOTk5MUMwIDE3Ljk4ODIgNC4zODc4OSAyMi45NTIyIDEwLjEyNDIgMjMuODUyNFYxNS40Njc2SDcuMDc3NThWMTEuOTk5MUgxMC4xMjQyVjkuMzU1NTNDMTAuMTI0MiA2LjM0ODI2IDExLjkxNTYgNC42ODcxNCAxNC42NTY0IDQuNjg3MTRDMTUuOTY5MiA0LjY4NzE0IDE3LjM0MjQgNC45MjE0OSAxNy4zNDI0IDQuOTIxNDlWNy44NzQzOUgxNS44Mjk0QzE0LjMzODggNy44NzQzOSAxMy44NzM5IDguNzk5MzMgMTMuODczOSA5Ljc0ODI0VjExLjk5OTFIMTcuMjAxOEwxNi42Njk4IDE1LjQ2NzZIMTMuODczOVYyMy44NTI0QzE5LjYxMDMgMjIuOTUyMiAyMy45OTgxIDE3Ljk4ODIgMjMuOTk4MSAxMS45OTkxWiIgLz4KPC9zdmc+){.w-5 .h-5}](https://www.facebook.com/linuxhandbook "Facebook"){.[&:nth-child(n_+_7)]:hidden .h-9 .w-9 .flex .items-center .justify-center .flex-shrink-0 .rounded-lg .hover:bg-gray-100 .hover:text-gray-700 .dark:hover:bg-gray-700 .dark:hover:text-gray-300 social-link="" aria-label="Facebook" target="_blank"}
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjgiPjwvY2lyY2xlPgo8bGluZSB4MT0iMjEiIHkxPSIyMSIgeDI9IjE2LjY1IiB5Mj0iMTYuNjUiPjwvbGluZT4KPC9zdmc+){.w-5 .h-5}
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iZmxleC1ub25lIHctNSBoLTUgdGV4dC1ncmF5LTQwMCBkYXJrOnRleHQtZ3JheS01MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld2JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8Y2lyY2xlIGN4PSIxMSIgY3k9IjExIiByPSI4Ij48L2NpcmNsZT4KPGxpbmUgeDE9IjIxIiB5MT0iMjEiIHgyPSIxNi42NSIgeTI9IjE2LjY1Ij48L2xpbmU+Cjwvc3ZnPg==){.flex-none .w-5 .h-5 .text-gray-400 .dark:text-gray-500} Quick search\...
+⌘K
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iZGFyazpoaWRkZW4gdy02IGgtNiBob3Zlcjp0ZXh0LWdyYXktNzAwIGRhcms6aG92ZXI6dGV4dC1ncmF5LTEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xMiAzdjFtMCAxNnYxbTktOWgtMU00IDEySDNtMTUuMzY0IDYuMzY0bC0uNzA3LS43MDdNNi4zNDMgNi4zNDNsLS43MDctLjcwN20xMi43MjggMGwtLjcwNy43MDdNNi4zNDMgMTcuNjU3bC0uNzA3LjcwN00xNiAxMmE0IDQgMCAxMS04IDAgNCA0IDAgMDE4IDB6IiAvPgo8L3N2Zz4=){.dark:hidden .w-6 .h-6 .hover:text-gray-700 .dark:hover:text-gray-100}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGRhcms6aW5saW5lIHctNSBoLTUgaG92ZXI6dGV4dC1ncmF5LTcwMCBkYXJrOmhvdmVyOnRleHQtZ3JheS0xMDAgcmVsYXRpdmUgLXRvcC1weCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTEyIDNjLjEzMiAwIC4yNjMgMCAuMzkzIDBhNy41IDcuNSAwIDAgMCA3LjkyIDEyLjQ0NmE5IDkgMCAxIDEgLTguMzEzIC0xMi40NTR6IiAvPgo8cGF0aCBkPSJNMTcgNGEyIDIgMCAwIDAgMiAyYTIgMiAwIDAgMCAtMiAyYTIgMiAwIDAgMCAtMiAtMmEyIDIgMCAwIDAgMiAtMiIgLz4KPC9zdmc+){.hidden .dark:inline .w-5 .h-5 .hover:text-gray-700 .dark:hover:text-gray-100 .relative .-top-px}
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSBob3Zlcjp0ZXh0LWdyYXktNzAwIGRhcms6aG92ZXI6dGV4dC1ncmF5LTEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjgiPjwvY2lyY2xlPgo8bGluZSB4MT0iMjEiIHkxPSIyMSIgeDI9IjE2LjY1IiB5Mj0iMTYuNjUiPjwvbGluZT4KPC9zdmc+){.w-5 .h-5 .hover:text-gray-700 .dark:hover:text-gray-100}
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSBob3Zlcjp0ZXh0LWdyYXktNzAwIGRhcms6aG92ZXI6dGV4dC1ncmF5LTEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik00IDhoMTZNNCAxNmgxNiIgLz4KPC9zdmc+){.w-5 .h-5 .hover:text-gray-700 .dark:hover:text-gray-100}
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iZmxleC1ub25lIGgtNSB3LTUgdGV4dC1ncmF5LTQwMCBob3Zlcjp0ZXh0LWdyYXktNzAwIGRhcms6aG92ZXI6dGV4dC1ncmF5LTEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik00IDhoMTZNNCAxNmgxNiIgLz4KPC9zdmc+){.flex-none .h-5 .w-5 .text-gray-400 .hover:text-gray-700 .dark:hover:text-gray-100}
+
+/
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaC01IHctNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik02IDE4TDE4IDZNNiA2bDEyIDEyIiAvPgo8L3N2Zz4=){.h-5 .w-5}
+
+-   [Latest
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/latest/){.group .px-3 .py-1.5 .flex .items-center .font-semibold .text-sm .leading-6 .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+-   [Bash Series
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/bash/){.group .px-3 .py-1.5 .flex .items-center .font-semibold .text-sm .leading-6 .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+-   [RHCE Ansible Series
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/ansible/){.group .px-3 .py-1.5 .flex .items-center .font-semibold .text-sm .leading-6 .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+-   [Proxmox Series
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/proxmox/){.group .px-3 .py-1.5 .flex .items-center .font-semibold .text-sm .leading-6 .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+-   [Podman Series
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGdyb3VwLVsuZXh0ZXJuYWxdOmlubGluZSBmbGV4LXNocmluay0wIHctNCBoLTQgbWwtMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KPHBhdGggZD0iTTE3IDdsLTEwIDEwIiAvPgo8cGF0aCBkPSJNOCA3bDkgMGwwIDkiIC8+Cjwvc3ZnPg==){.hidden .group-[.external]:inline .flex-shrink-0 .w-4 .h-4 .ml-1}](https://linuxhandbook.com/podman/){.group .px-3 .py-1.5 .flex .items-center .font-semibold .text-sm .leading-6 .rounded-lg .hover:bg-gray-100 .[&.current]:bg-gray-100 .[&.current-parent]:bg-gray-100 .dark:hover:bg-gray-700 .dark:[&.current]:bg-gray-700 .dark:[&.current-parent]:bg-gray-700}
+
+[![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0iY3VycmVudENvbG9yIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIGQ9Ik0yMy45NTQgNC41NjljLS44ODUuMzg5LTEuODMuNjU0LTIuODI1Ljc3NSAxLjAxNC0uNjExIDEuNzk0LTEuNTc0IDIuMTYzLTIuNzIzLS45NTEuNTU1LTIuMDA1Ljk1OS0zLjEyNyAxLjE4NC0uODk2LS45NTktMi4xNzMtMS41NTktMy41OTEtMS41NTktMi43MTcgMC00LjkyIDIuMjAzLTQuOTIgNC45MTcgMCAuMzkuMDQ1Ljc2NS4xMjcgMS4xMjRDNy42OTEgOC4wOTQgNC4wNjYgNi4xMyAxLjY0IDMuMTYxYy0uNDI3LjcyMi0uNjY2IDEuNTYxLS42NjYgMi40NzUgMCAxLjcxLjg3IDMuMjEzIDIuMTg4IDQuMDk2LS44MDctLjAyNi0xLjU2Ni0uMjQ4LTIuMjI4LS42MTZ2LjA2MWMwIDIuMzg1IDEuNjkzIDQuMzc0IDMuOTQ2IDQuODI3LS40MTMuMTExLS44NDkuMTcxLTEuMjk2LjE3MS0uMzE0IDAtLjYxNS0uMDMtLjkxNi0uMDg2LjYzMSAxLjk1MyAyLjQ0NSAzLjM3NyA0LjYwNCAzLjQxNy0xLjY4IDEuMzE5LTMuODA5IDIuMTA1LTYuMTAyIDIuMTA1LS4zOSAwLS43NzktLjAyMy0xLjE3LS4wNjcgMi4xODkgMS4zOTQgNC43NjggMi4yMDkgNy41NTcgMi4yMDkgOS4wNTQgMCAxMy45OTktNy40OTYgMTMuOTk5LTEzLjk4NiAwLS4yMDkgMC0uNDItLjAxNS0uNjMuOTYxLS42ODkgMS44LTEuNTYgMi40Ni0yLjU0OGwtLjA0Ny0uMDJ6IiAvPgo8L3N2Zz4=){.w-5 .h-5}](https://twitter.com/linuxhandbook "Twitter"){.mr-2 .h-9 .w-9 .flex .items-center .justify-center .flex-shrink-0 .rounded-lg .hover:text-gray-700 .dark:hover:text-gray-200 social-link="" aria-label="Twitter" target="_blank"}
+[![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Ym94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0iY3VycmVudENvbG9yIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIGQ9Ik0yMy45OTgxIDExLjk5OTFDMjMuOTk4MSA1LjM3MjE2IDE4LjYyNiAwIDExLjk5OTEgMEM1LjM3MjE2IDAgMCA1LjM3MjE2IDAgMTEuOTk5MUMwIDE3Ljk4ODIgNC4zODc4OSAyMi45NTIyIDEwLjEyNDIgMjMuODUyNFYxNS40Njc2SDcuMDc3NThWMTEuOTk5MUgxMC4xMjQyVjkuMzU1NTNDMTAuMTI0MiA2LjM0ODI2IDExLjkxNTYgNC42ODcxNCAxNC42NTY0IDQuNjg3MTRDMTUuOTY5MiA0LjY4NzE0IDE3LjM0MjQgNC45MjE0OSAxNy4zNDI0IDQuOTIxNDlWNy44NzQzOUgxNS44Mjk0QzE0LjMzODggNy44NzQzOSAxMy44NzM5IDguNzk5MzMgMTMuODczOSA5Ljc0ODI0VjExLjk5OTFIMTcuMjAxOEwxNi42Njk4IDE1LjQ2NzZIMTMuODczOVYyMy44NTI0QzE5LjYxMDMgMjIuOTUyMiAyMy45OTgxIDE3Ljk4ODIgMjMuOTk4MSAxMS45OTkxWiIgLz4KPC9zdmc+){.w-5 .h-5}](https://www.facebook.com/linuxhandbook "Facebook"){.mr-2 .h-9 .w-9 .flex .items-center .justify-center .flex-shrink-0 .rounded-lg .hover:text-gray-700 .dark:hover:text-gray-200 social-link="" aria-label="Facebook" target="_blank"}
+
+[Commands](https://linuxhandbook.com/tag/commands/){.block .text-accent .font-semibold .mt-0 .mb-1 .no-underline .hover:opacity-85}
+
+# Findmnt - Better Way of Finding Mounted Filesystems on Linux {#findmnt---better-way-of-finding-mounted-filesystems-on-linux .my-0 .mx-auto .max-w-4xl .text-3xl .sm:text-5xl .lg:text-6xl .font-bold .tracking-tight .text-gray-900 .dark:text-gray-200}
+
+Learn to use findmnt instead of mount for a more robust and customizable listing of mounted file systems.
+
+Feb 7, 2019
+---
+[Eric Simard](https://linuxhandbook.com/author/eric/ "Eric Simard"){.no-underline .font-semibold .text-inherit}
+
+## Findmnt - Better Way of Finding Mounted Filesystems on Linux {#___TOCBOT___ .sr-only .m-0}
+
+I have been working on a bash scripting project to auto build Linux from scratch. Every time I go through the code I find way to make it cleaner. I take a little section of code and make it better.
+
+The other day I was making a modification to check if a filesystem is mounted before mounting it. I was looking for a better way to do so. I did not want to use the usual *mount \| grep* or any code like it. I wanted something cleaner.
+
+## Mount vs Findmnt
+
+I don't know why, but at that moment I found myself wondering why I connect to the internet so often to find information that is already on my laptop. So, I fire up *man mount,* I quickly glanced at the man page and notice this:
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/mount.png" class="kg-image" loading="lazy" srcset="https://linuxhandbook.com/content/images/size/w600/2020/06/mount.png 600w, https://linuxhandbook.com/content/images/2020/06/mount.png 686w" width="686" height="164" alt="Mount man page" />
+</figure>
+
+And there I had my answer. First I have been using the wrong command for a while now. Second, Google does not always have the best answer.
+
+The irony here is that this is not mentioned in online man pages that I usually look through. See for yourself, on the man page of [mount](https://linux.die.net/man/8/mount?ref=linuxhandbook.com){rel="noreferrer noopener"}, *findmnt* is only referenced at the end. Should I have gone through my regular channels to find an answer I would not be writing this article.
+
+Right away I got very curious, how much better is this [*findmnt*](https://linux.die.net/man/8/findmnt?ref=linuxhandbook.com){rel="noreferrer noopener"}? How many pipes will I be able to remove from my scripts? Turns out it is so much better then *mount* listing. First, lets compare the default output of each command.
+
+### **Mount default output**
+
+<figure class="kg-card kg-image-card kg-card-hascaption">
+<img src="https://linuxhandbook.com/content/images/2020/06/mountdefault.png" class="kg-image" loading="lazy" srcset="https://linuxhandbook.com/content/images/size/w600/2020/06/mountdefault.png 600w, https://linuxhandbook.com/content/images/2020/06/mountdefault.png 931w" sizes="(min-width: 720px) 720px" width="931" height="690" alt="default output of mount" />
+<figcaption>Default output of mount</figcaption>
+</figure>
+
+Looking at the above listing of mounted file system, it is easy to see why [grep](https://linuxhandbook.com/grep-command-examples/){rel="noreferrer noopener"} became so popular. The information is all there, but a better format would make it easier to read. To accomplish that, you already would need a pipe and external command. Now let's look at *findmnt*.
+
+### Findmnt default output
+
+<figure class="kg-card kg-image-card kg-card-hascaption">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmntdefault.png" class="kg-image" loading="lazy" srcset="https://linuxhandbook.com/content/images/size/w600/2020/06/findmntdefault.png 600w, https://linuxhandbook.com/content/images/size/w1000/2020/06/findmntdefault.png 1000w, https://linuxhandbook.com/content/images/2020/06/findmntdefault.png 1044w" sizes="(min-width: 720px) 720px" width="1044" height="648" alt="Default output of findmnt" />
+<figcaption aria-hidden="true">Default output of findmnt</figcaption>
+</figure>
+
+That looks a lot better. It gets better, with *findmnt* you won't have to use a combination of tools anymore. It is very flexible and that gives you a chance to write cleaner code when used in a script.
+
+## Practical usage of findmnt command in Linux
+
+Checking if a file system is mounted with *findmnt* is much easier. You can check for a *source* or *target* without using any options. Provide a mount point (*target*) or device (*source*) with no option and *findmnt* will attempt to match the argument you provided against both.
+
+    findmnt /boot
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_boot.png" class="kg-image" loading="lazy" width="461" height="72" />
+</figure>
+
+Findmnt really works like a search command for file system. If matches are found, they will be printed and *findmnt* returns 0. When nothing matches your query, *findmnt* prints nothing and returns 1.
+
+A long list of options comes with *findmnt*. You have 2 main category of options, narrowing your search and formatting the output.
+
+### Narrowing your search
+
+Like *find* for finding files, *findmnt* is for finding file system. You already know how to limit your search by providing a string that will be matched against SOURCE and TARGET. Should you need to narrow your search to a SOURCE or a TARGET, use the -S and -T options.
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_S_T.png" class="kg-image" loading="lazy" width="503" height="91" />
+</figure>
+
+Already at this point, I was sold on using *findmnt* instead of *mount*. I can query the partition that I want. And I don't use a pipe. Findmnt does not stop there, it has a multitude of options designed to give you a powerful search of the file system.
+
+I think one of the most interesting options is **-O**, **--options**. The **-O** options lets you write a list of options to match your search against. Searching for read-only file system is now as easy as *findmnt -O ro.*
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_ro.png" class="kg-image" loading="lazy" width="455" height="50" />
+</figure>
+
+The **-O** options can also take a comma-separated list. This let you search against multiple options and list only file system that have all the desired options.
+
+Searching for a given file system type also does not require the use of external tools. Simply use the **-t** options. In the example below I listed all *tmpfs* mount.
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_t.png" class="kg-image" loading="lazy" srcset="https://linuxhandbook.com/content/images/size/w600/2020/06/findmnt_t.png 600w, https://linuxhandbook.com/content/images/2020/06/findmnt_t.png 675w" width="675" height="147" />
+</figure>
+
+In all the examples above, findmnt searched /etc/fstab, /etc/mtab and /proc/self/mountinfo. You can easily limit this wide search with the following options:
+
+-   **--fstab** (Narrow search to /etc/fstab only)
+-   **--mtab** (Narrow search to /etc/mtab only)
+-   **--kernel** (Search in /proc/self/mountinfo only)
+
+Another interesting option is **-i**, **--invert**. Which invert the sense of matching. In a previous example, we listed all *tmpfs* with the **-t** option. The example below will list all file system of type *swap* from fstab only.
+
+    findmnt --fstab -t swap
+
+This one will list all file systems except any of type swap.
+
+    findmnt --fstab -t swap -i
+
+Already with the given options you can avoid using a lot of pipes and external programs. And it does not stop here. *Findmnt* provides a good set of options to customize the output of your search results.
+
+### Customizing the output of findmnt command
+
+You won't need to use [head command](https://linuxhandbook.com/head-command/){rel="noreferrer noopener"} to remove the header. Simply call *findmnt* with **-n** option:
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmount_n.png" class="kg-image" loading="lazy" width="473" height="51" />
+</figure>
+
+I was not expecting the next option to even be an option. Findmnt can imitate the output of the [df command](https://linuxhandbook.com/df-command/){rel="noreferrer noopener"}. Calling *findmnt* with **-D** or **--df** will tell *findmnt* to display information about space for each listed file system.
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_df.png" class="kg-image" loading="lazy" width="568" height="262" />
+</figure>
+
+Options can be combined for more specific search. In this next example, I use *findmnt* to list all file system from /etc/fstab and request to display df information.
+
+    findmnt --fstab --df
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_fstab_df.png" class="kg-image" loading="lazy" width="586" height="113" />
+</figure>
+
+I don't know about you, but I am starting to enjoy *findmnt*. Except for those **UUID** with the last command. I get it, it is a good way to identify device for the OS. Me, I would like a more human readable way. You accomplish this with the **-e** option.
+
+The **-e** or **--evaluate** option with convert all tags like UUID, LABEL, PARTLABEL, PARTUUID to the corresponding device name. See the results when I run the same command with **-e** options.
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_fstab_df_e.png" class="kg-image" loading="lazy" width="522" height="110" />
+</figure>
+
+I like to way *findmnt* format it's output. It is more human friendly. On the other hand, this format when used in a script can be harder to manipulate. A simple line-by-line, space separated data set would be easier. This is easily done with **-r**, **--raw** option.
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_raw.png" class="kg-image" loading="lazy" width="547" height="106" />
+</figure>
+
+This next option is really nice. I think it remove the need to *\| grep* almost entirely. You can tell *findmnt* exactly which column to print with the **-o**, **--output**. This options take a comma separated list of columns to print. Using the following command you can get just the available space of your root partition with no headers.
+
+    findmnt -T / --df -o AVAIL -n
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_avail-1.png" class="kg-image" loading="lazy" width="586" height="28" />
+</figure>
+
+All you have to do in your scripts is to remove the last character. In the above command, I gave the **--df** option. That was not necessary, same results will be printed even without that option.
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_avail_2.png" class="kg-image" loading="lazy" width="527" height="48" />
+</figure>
+
+Findmnt provides quite an extensive list of output column. I provide you below with a short list of column that I think will be of interest. You can view the full list with *findmnt --help*
+
+-   SOURCE source device
+-   TARGET mountpoint
+-   FSTYPE filesystem type
+-   OPTIONS all mount options
+-   LABEL filesystem label
+-   UUID filesystem UUID
+-   MAJ:MIN major:minor device number
+-   SIZE filesystem size
+-   AVAIL filesystem size available
+-   USED filesystem size used
+-   USE% filesystem use percentage
+-   FSROOT filesystem root
+
+The default list of printed column can be extended instead of replaced. Simply provide a list using the following format: **+list**. The following command will give the same information as using **--df**, except that the columns will be added to the end.
+
+    findmnt -T / -o +SIZE,USE%,AVAIL
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_extend_output.png" class="kg-image" loading="lazy" srcset="https://linuxhandbook.com/content/images/size/w600/2020/06/findmnt_extend_output.png 600w, https://linuxhandbook.com/content/images/2020/06/findmnt_extend_output.png 604w" width="604" height="68" />
+</figure>
+
+Already I am falling in love with *findmnt*. This will save me lots of piping and long command lines. And *findmnt* does not stop there. There is one more functionality I want to talk about. **Polling**.
+
+Yes, *findmnt* can be used to monitor changes in /proc/self/mountinfo file. This effectively lets you watch your system for mounting related activities. No more [while loop in bash scripts](https://linuxhandbook.com/bash-while-loop/).
+
+*Findmnt* will listen for the following actions, **mount**, **umount**, **remount** and **move**. You can limit this by providing a comma separated list of actions to listen for. For example, the following will only monitor for mounting file system.
+
+<figure class="kg-card kg-image-card">
+<img src="https://linuxhandbook.com/content/images/2020/06/findmnt_poll_mount.png" class="kg-image" loading="lazy" width="501" height="63" />
+</figure>
+
+In the above picture, you see the output printed by *findmnt* when a new partition got mounted. You notice the new column **ACTION**? With the **--poll** option you have 3 new column that can be displayed:
+
+-   ACTION: Available for mount, umount, remount and move
+-   OLD-TARGET: Available for umount and move action.
+-   OLD-OPTIONS: Avalable for umount and remount.
+
+When used in this mode, *findmnt* will block, if used in a script, the script will "hang". The time that **--poll** will block and listen for actions can be limited with 2 options
+
+-   **--first-only**: Findmnt will quit after the first action is detected.
+-   **--timeout X**: Findmnt will quit after X milliseconds.
+
+When you put it all together, *findmnt* is one powerful tool. When used in scripts, you will do away with a lot of extra code. The need to pipe to external command as been greatly diminished.
+
+Previously listed options can also be used with **--poll**. In the example below, *findmnt* will listen for a mount action and print the SOURCE,TARGET, SIZE and USE %. But only if the mount target matches the **-T** options.
+
+    findmnt -T /mnt/lfs --poll=mount -o SOURCE,TARGET,SIZE,USE%
+
+## Bonus Tip: Real life example of findmnt
+
+I have been working on a bash scripted environment to compile [Linux from Scratch](http://www.linuxfromscratch.org/?ref=linuxhandbook.com){rel="noreferrer noopener"} for a little while now. Using *findmnt* in my scripts resulted in better and cleaner code.
+
+During the initial startup of my script, I check to see if LFS partition are mounted, if not the scripts mounts them. The code used to look like this:
+
+    if [[ `grep "$pd on $pm" < <(mount) | wc -l` < 1 ]];
+    then
+    ...
+    ...
+    fi
+
+The project is for education purpose, this is why I used [process substitution](https://linuxhandbook.com/bash-process-substitution/) and pipe in the above test. Throughout my code I display multiple ways to do the same task. Using *findmnt* I came up with a cleaner way to do the same.
+
+    findmnt -S $pd -T $pm > /dev/null || (
+      ...
+      ...
+    )
+
+I [redirect the output to /dev/null](https://linuxhandbook.com/redirect-dev-null/), I don't need to have *findmnt* output printed on the console. *Findmnt* will return 1 if the search fails, which will cause the code within ( ... ) to execute.
+
+I hope you enjoyed and learned a new command. If you got interesting usage for it, please share in comments. There is also another take on this article: online search are not always the best. We tend to forget that Linux comes with a manual.
+
+## On this page {#on-this-page .text-2xs .uppercase .font-bold .tracking-wider .mb-3 .dark:text-gray-200}
+
+[![Linux Handbook](https://linuxhandbook.com/content/images/2021/08/linux-handbook-cover.png){.max-h-9 .w-auto}](https://linuxhandbook.com){.flex-none .inline-flex .font-bold .text-lg .text-gray-900 .dark:text-gray-50 brand="" aria-label="Linux Handbook"}
+
+An independent, reader-supported publication focusing on Linux Command Line, Server, Self-hosting, DevOps and Cloud Learning
+
+## Subscribe to LHB Linux Digest Newsletter {#subscribe-to-lhb-linux-digest-newsletter .font-bold .text-base .text-gray-900 .dark:text-gray-200}
+
+Get a curated assortment of Linux tips, tutorials and memes directly in your inbox. Over 14,000 Linux users enjoy it twice a month.
+
+Enter your email
+Subscribe
+
+-   [About
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0icmVsYXRpdmUgdG9wLXB4IGhpZGRlbiBncm91cC1bLmV4dGVybmFsXTppbmxpbmUgZmxleC1zaHJpbmstMCB3LTMuNSBoLTMuNSBtbC0xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZvY3VzYWJsZT0iZmFsc2UiIGFyaWEtaGlkZGVuPSJ0cnVlIj4KPHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIiAvPgo8cGF0aCBkPSJNMTcgN2wtMTAgMTAiIC8+CjxwYXRoIGQ9Ik04IDdsOSAwbDAgOSIgLz4KPC9zdmc+){.relative .top-px .hidden .group-[.external]:inline .flex-shrink-0 .w-3.5 .h-3.5 .ml-1}](https://linuxhandbook.com/about/){.group .inline-flex .items-center .hover:opacity-80}
+-   [Contact
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0icmVsYXRpdmUgdG9wLXB4IGhpZGRlbiBncm91cC1bLmV4dGVybmFsXTppbmxpbmUgZmxleC1zaHJpbmstMCB3LTMuNSBoLTMuNSBtbC0xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZvY3VzYWJsZT0iZmFsc2UiIGFyaWEtaGlkZGVuPSJ0cnVlIj4KPHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIiAvPgo8cGF0aCBkPSJNMTcgN2wtMTAgMTAiIC8+CjxwYXRoIGQ9Ik04IDdsOSAwbDAgOSIgLz4KPC9zdmc+){.relative .top-px .hidden .group-[.external]:inline .flex-shrink-0 .w-3.5 .h-3.5 .ml-1}](https://linuxhandbook.com/contact/){.group .inline-flex .items-center .hover:opacity-80}
+-   [Pro Resources
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0icmVsYXRpdmUgdG9wLXB4IGhpZGRlbiBncm91cC1bLmV4dGVybmFsXTppbmxpbmUgZmxleC1zaHJpbmstMCB3LTMuNSBoLTMuNSBtbC0xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZvY3VzYWJsZT0iZmFsc2UiIGFyaWEtaGlkZGVuPSJ0cnVlIj4KPHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIiAvPgo8cGF0aCBkPSJNMTcgN2wtMTAgMTAiIC8+CjxwYXRoIGQ9Ik04IDdsOSAwbDAgOSIgLz4KPC9zdmc+){.relative .top-px .hidden .group-[.external]:inline .flex-shrink-0 .w-3.5 .h-3.5 .ml-1}](https://linuxhandbook.com/member-resources/){.group .inline-flex .items-center .hover:opacity-80}
+-   [Membership FAQ
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0icmVsYXRpdmUgdG9wLXB4IGhpZGRlbiBncm91cC1bLmV4dGVybmFsXTppbmxpbmUgZmxleC1zaHJpbmstMCB3LTMuNSBoLTMuNSBtbC0xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZvY3VzYWJsZT0iZmFsc2UiIGFyaWEtaGlkZGVuPSJ0cnVlIj4KPHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIiAvPgo8cGF0aCBkPSJNMTcgN2wtMTAgMTAiIC8+CjxwYXRoIGQ9Ik04IDdsOSAwbDAgOSIgLz4KPC9zdmc+){.relative .top-px .hidden .group-[.external]:inline .flex-shrink-0 .w-3.5 .h-3.5 .ml-1}](https://linuxhandbook.com/membership-faq/){.group .inline-flex .items-center .hover:opacity-80}
+-   [Newsletters
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0icmVsYXRpdmUgdG9wLXB4IGhpZGRlbiBncm91cC1bLmV4dGVybmFsXTppbmxpbmUgZmxleC1zaHJpbmstMCB3LTMuNSBoLTMuNSBtbC0xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZvY3VzYWJsZT0iZmFsc2UiIGFyaWEtaGlkZGVuPSJ0cnVlIj4KPHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIiAvPgo8cGF0aCBkPSJNMTcgN2wtMTAgMTAiIC8+CjxwYXRoIGQ9Ik04IDdsOSAwbDAgOSIgLz4KPC9zdmc+){.relative .top-px .hidden .group-[.external]:inline .flex-shrink-0 .w-3.5 .h-3.5 .ml-1}](https://linuxhandbook.com/newsletter/){.group .inline-flex .items-center .hover:opacity-80}
+-   [Privacy Policy
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0icmVsYXRpdmUgdG9wLXB4IGhpZGRlbiBncm91cC1bLmV4dGVybmFsXTppbmxpbmUgZmxleC1zaHJpbmstMCB3LTMuNSBoLTMuNSBtbC0xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZvY3VzYWJsZT0iZmFsc2UiIGFyaWEtaGlkZGVuPSJ0cnVlIj4KPHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIiAvPgo8cGF0aCBkPSJNMTcgN2wtMTAgMTAiIC8+CjxwYXRoIGQ9Ik04IDdsOSAwbDAgOSIgLz4KPC9zdmc+){.relative .top-px .hidden .group-[.external]:inline .flex-shrink-0 .w-3.5 .h-3.5 .ml-1}](https://linuxhandbook.com/privacy-policy/){.group .inline-flex .items-center .hover:opacity-80}
+-   [Write for Us
+    ![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0icmVsYXRpdmUgdG9wLXB4IGhpZGRlbiBncm91cC1bLmV4dGVybmFsXTppbmxpbmUgZmxleC1zaHJpbmstMCB3LTMuNSBoLTMuNSBtbC0xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZvY3VzYWJsZT0iZmFsc2UiIGFyaWEtaGlkZGVuPSJ0cnVlIj4KPHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIiAvPgo8cGF0aCBkPSJNMTcgN2wtMTAgMTAiIC8+CjxwYXRoIGQ9Ik04IDdsOSAwbDAgOSIgLz4KPC9zdmc+){.relative .top-px .hidden .group-[.external]:inline .flex-shrink-0 .w-3.5 .h-3.5 .ml-1}](https://linuxhandbook.com/write-for-us/){.group .inline-flex .items-center .hover:opacity-80}
+
+[Linux Handbook](https://linuxhandbook.com) © 2024
+•
+Hosted on [DigitalOcean](https://digitalocean.pxf.io/JzK74r){.font-semibold .hover:opacity-80 target="_blank" rel="noopener"}, Published with [Ghost](https://ghost.org/?via=abhishek70){.font-semibold .hover:opacity-80 target="_blank" rel="noopener"}, using [Spiritix](https://spiritix.co/?aff=GNoD0){.font-semibold .hover:opacity-80 target="_blank" rel="noopener"} theme
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iZGFyazpoaWRkZW4gdy01IGgtNSBsZzp3LTUgbGc6aC01IGhvdmVyOm9wYWNpdHktODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld2JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIGZvY3VzYWJsZT0iZmFsc2UiIGFyaWEtaGlkZGVuPSJ0cnVlIj4KPHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNMTIgM3YxbTAgMTZ2MW05LTloLTFNNCAxMkgzbTE1LjM2NCA2LjM2NGwtLjcwNy0uNzA3TTYuMzQzIDYuMzQzbC0uNzA3LS43MDdtMTIuNzI4IDBsLS43MDcuNzA3TTYuMzQzIDE3LjY1N2wtLjcwNy43MDdNMTYgMTJhNCA0IDAgMTEtOCAwIDQgNCAwIDAxOCAweiIgLz4KPC9zdmc+){.dark:hidden .w-5 .h-5 .lg:w-5 .lg:h-5 .hover:opacity-80}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaGlkZGVuIGRhcms6aW5saW5lIHctNSBoLTUgbGc6dy00IGxnOmgtNCByZWxhdGl2ZSAtdG9wLXB4IGhvdmVyOm9wYWNpdHktODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld2JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8cGF0aCBzdHJva2U9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiIC8+CjxwYXRoIGQ9Ik0xMiAzYy4xMzIgMCAuMjYzIDAgLjM5MyAwYTcuNSA3LjUgMCAwIDAgNy45MiAxMi40NDZhOSA5IDAgMSAxIC04LjMxMyAtMTIuNDU0eiIgLz4KPHBhdGggZD0iTTE3IDRhMiAyIDAgMCAwIDIgMmEyIDIgMCAwIDAgLTIgMmEyIDIgMCAwIDAgLTIgLTJhMiAyIDAgMCAwIDIgLTIiIC8+Cjwvc3ZnPg==){.hidden .dark:inline .w-5 .h-5 .lg:w-4 .lg:h-4 .relative .-top-px .hover:opacity-80}
+
+[![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSBsZzp3LTQgbGc6aC00IGhvdmVyOm9wYWNpdHktODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld2JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9ImN1cnJlbnRDb2xvciIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8cGF0aCBkPSJNMjMuOTU0IDQuNTY5Yy0uODg1LjM4OS0xLjgzLjY1NC0yLjgyNS43NzUgMS4wMTQtLjYxMSAxLjc5NC0xLjU3NCAyLjE2My0yLjcyMy0uOTUxLjU1NS0yLjAwNS45NTktMy4xMjcgMS4xODQtLjg5Ni0uOTU5LTIuMTczLTEuNTU5LTMuNTkxLTEuNTU5LTIuNzE3IDAtNC45MiAyLjIwMy00LjkyIDQuOTE3IDAgLjM5LjA0NS43NjUuMTI3IDEuMTI0QzcuNjkxIDguMDk0IDQuMDY2IDYuMTMgMS42NCAzLjE2MWMtLjQyNy43MjItLjY2NiAxLjU2MS0uNjY2IDIuNDc1IDAgMS43MS44NyAzLjIxMyAyLjE4OCA0LjA5Ni0uODA3LS4wMjYtMS41NjYtLjI0OC0yLjIyOC0uNjE2di4wNjFjMCAyLjM4NSAxLjY5MyA0LjM3NCAzLjk0NiA0LjgyNy0uNDEzLjExMS0uODQ5LjE3MS0xLjI5Ni4xNzEtLjMxNCAwLS42MTUtLjAzLS45MTYtLjA4Ni42MzEgMS45NTMgMi40NDUgMy4zNzcgNC42MDQgMy40MTctMS42OCAxLjMxOS0zLjgwOSAyLjEwNS02LjEwMiAyLjEwNS0uMzkgMC0uNzc5LS4wMjMtMS4xNy0uMDY3IDIuMTg5IDEuMzk0IDQuNzY4IDIuMjA5IDcuNTU3IDIuMjA5IDkuMDU0IDAgMTMuOTk5LTcuNDk2IDEzLjk5OS0xMy45ODYgMC0uMjA5IDAtLjQyLS4wMTUtLjYzLjk2MS0uNjg5IDEuOC0xLjU2IDIuNDYtMi41NDhsLS4wNDctLjAyeiIgLz4KPC9zdmc+){.w-5 .h-5 .lg:w-4 .lg:h-4 .hover:opacity-80}](https://twitter.com/linuxhandbook "Twitter"){.mb-3 .mr-5 .last:mr-0 social-link="" aria-label="Twitter" target="_blank"}
+[![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idy01IGgtNSBsZzp3LTQgbGc6aC00IGhvdmVyOm9wYWNpdHktODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld2JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9ImN1cnJlbnRDb2xvciIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiPgo8cGF0aCBkPSJNMjMuOTk4MSAxMS45OTkxQzIzLjk5ODEgNS4zNzIxNiAxOC42MjYgMCAxMS45OTkxIDBDNS4zNzIxNiAwIDAgNS4zNzIxNiAwIDExLjk5OTFDMCAxNy45ODgyIDQuMzg3ODkgMjIuOTUyMiAxMC4xMjQyIDIzLjg1MjRWMTUuNDY3Nkg3LjA3NzU4VjExLjk5OTFIMTAuMTI0MlY5LjM1NTUzQzEwLjEyNDIgNi4zNDgyNiAxMS45MTU2IDQuNjg3MTQgMTQuNjU2NCA0LjY4NzE0QzE1Ljk2OTIgNC42ODcxNCAxNy4zNDI0IDQuOTIxNDkgMTcuMzQyNCA0LjkyMTQ5VjcuODc0MzlIMTUuODI5NEMxNC4zMzg4IDcuODc0MzkgMTMuODczOSA4Ljc5OTMzIDEzLjg3MzkgOS43NDgyNFYxMS45OTkxSDE3LjIwMThMMTYuNjY5OCAxNS40Njc2SDEzLjg3MzlWMjMuODUyNEMxOS42MTAzIDIyLjk1MjIgMjMuOTk4MSAxNy45ODgyIDIzLjk5ODEgMTEuOTk5MVoiIC8+Cjwvc3ZnPg==){.w-5 .h-5 .lg:w-4 .lg:h-4 .hover:opacity-80}](https://www.facebook.com/linuxhandbook "Facebook"){.mb-3 .mr-5 .last:mr-0 social-link="" aria-label="Facebook" target="_blank"}
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0ibS0xLjUgdGV4dC13aGl0ZSBvcGFjaXR5LTEwMCB3LTggaC04IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNDBweCIgaGVpZ2h0PSI0MHB4IiB2aWV3Ym94PSIwIDAgNDAgNDAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQwIDQwIiB4bWw6c3BhY2U9InByZXNlcnZlIiBmb2N1c2FibGU9ImZhbHNlIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CjxwYXRoIG9wYWNpdHk9IjAuMiIgZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMjAuMjAxLDUuMTY5Yy04LjI1NCwwLTE0Ljk0Niw2LjY5Mi0xNC45NDYsMTQuOTQ2YzAsOC4yNTUsNi42OTIsMTQuOTQ2LDE0Ljk0NiwxNC45NDYKczE0Ljk0Ni02LjY5MSwxNC45NDYtMTQuOTQ2QzM1LjE0NiwxMS44NjEsMjguNDU1LDUuMTY5LDIwLjIwMSw1LjE2OXogTTIwLjIwMSwzMS43NDljLTYuNDI1LDAtMTEuNjM0LTUuMjA4LTExLjYzNC0xMS42MzQKYzAtNi40MjUsNS4yMDktMTEuNjM0LDExLjYzNC0xMS42MzRjNi40MjUsMCwxMS42MzMsNS4yMDksMTEuNjMzLDExLjYzNEMzMS44MzQsMjYuNTQxLDI2LjYyNiwzMS43NDksMjAuMjAxLDMxLjc0OXoiIC8+CjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTI2LjAxMywxMC4wNDdsMS42NTQtMi44NjZjLTIuMTk4LTEuMjcyLTQuNzQzLTIuMDEyLTcuNDY2LTIuMDEyaDB2My4zMTJoMApDMjIuMzIsOC40ODEsMjQuMzAxLDkuMDU3LDI2LjAxMywxMC4wNDd6Ij4KPGFuaW1hdGV0cmFuc2Zvcm0gYXR0cmlidXRldHlwZT0ieG1sIiBhdHRyaWJ1dGVuYW1lPSJ0cmFuc2Zvcm0iIHR5cGU9InJvdGF0ZSIgZnJvbT0iMCAyMCAyMCIgdG89IjM2MCAyMCAyMCIgZHVyPSIwLjVzIiByZXBlYXRjb3VudD0iaW5kZWZpbml0ZSI+PC9hbmltYXRldHJhbnNmb3JtPgo8L3BhdGg+Cjwvc3ZnPg==){.m-1.5 .text-white .opacity-100 .w-8 .h-8}

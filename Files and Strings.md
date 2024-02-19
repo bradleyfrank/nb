@@ -46,3 +46,20 @@ index_name="${indexes[$i]%$'\n'}"  # removes newlines from the array value
 ```sh
 ${vcs_info_msg_0_/(#s):(#e)/}  # remove stand-alone color (i.e. '^:$')
 ```
+
+## Matching
+
+```sh
+paste file1 file2 > file3  # merge line-by-line
+awk 'NR>1 {print $1}'  # skip first line in output
+awk '/PATTERN/{f="newfile"++i;}{print > f;}'  # split a file at every PATTERN
+awk '/PATTERN/{f="newfile"++i;next}{print > f;}'  # split file at every PATTERN but omit PATTERN
+awk 'NR%n==1{f="newfile"++i;}{print > f}'  # split a file on every Nth line
+awk '!x[$0]++'  # find non-adjacent unique lines
+awk -vFS=. -vOFS=. '{$NF++;print}'  # increment version number
+sed -i '1s/^/<added text> \n/'  # insert at top of file
+sed -n '/PATTERN/,$p'  # print all lines, inclusively, from search string
+sed '/PATTERN/q'  # print all lines up to the match
+sed '$!N; /^\(.*\)\n\1$/!P; D'  # delete all consecutive duplicate lines from a file
+sed ':a;N;$!ba;s/\n/\\n/g'  # replace newlines with '\n'
+```

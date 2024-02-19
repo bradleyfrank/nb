@@ -1,0 +1,107 @@
+# Jan-Piet Mens :: Using {{ ansible_managed }} in Ansible templates (jpmens.net)
+
+## Tags
+
+#ansible
+
+<https://jpmens.net/2020/09/29/using-ansible-managed/>
+
+## Content
+
+
+
+-   [![Atom](/inc/feed.png){width="16" height="16"}](/atom.xml)
+-   [Search](# "grep"){.greplink}
+-   [Pages](/pages/index.html "more")
+-   [Archives](/archive/ "ls -l")
+-   [\@M](https://mastodon.social/@jpmens "Fediverse")
+-   [About](/pages/about/ "whoami")
+-   [Support](https://liberapay.com/jpmens/donate "$$")
+
+# [Jan-Piet Mens](/)
+
+# [Using {{ ansible_managed }} in Ansible templates](/2020/09/29/using-ansible-managed/)
+
+When we [originally contributed](https://github.com/ansible/ansible/pull/1195) the `{{ ansible_managed }}`{.highlighter-rouge} feature to the Ansible project it was quite rudimentary: the intention was to have a token which would be templated out to ensure people looking at the remote file would keep their paws off it, warning against manual modifications to the file which would be overwritten at the next playbook run. We added more features, and I think we [finalized the variable](https://github.com/ansible/ansible/pull/1218) almost exactly six years ago.
+
+<figure class="highlight">
+<pre class="jinja" data-lang="jinja"><code>ansible_managed        | {{ ansible_managed }}
+template_host          | {{ template_host }}
+template_uid           | {{ template_uid }}
+template_path          | {{ template_path }}</code></pre>
+</figure>
+
+The output from this template was something like
+
+<figure class="highlight">
+<pre class="text" data-lang="text"><code>ansible_managed        | Ansible managed: /tmp/a/input.j2 modified on 2020-09-29 14:12:44 by jpm on rabbit.ww.mens.de
+template_host          | rabbit.ww.mens.de
+template_uid           | jpm
+template_path          | /tmp/a/input.j2</code></pre>
+</figure>
+
+The `{{ ansible_managed }}`{.highlighter-rouge} variable was (and still is) configurable via the `ansible.cfg`{.highlighter-rouge} mechanisms, and I recall spending quite some time on the time stamp feature, i.e. the modification timestamp of the source template on the controller. It was meant to change on the target only when the source template was modified. All was fine and dandy. I thought.
+
+Years later somebody noticed that there are cases, particularly when using *git*, when the timestamp of the source changes involuntarily. This, in my opinion unfortunately, caused the project to [change the default handling](https://github.com/ansible/ansible/pull/18094) of `{{ ansible_managed }}`{.highlighter-rouge} to henceforth output the string `Ansible managed`{.highlighter-rouge} only -- rather boring. :-)
+
+As mentioned above, we originally made the string configurable, so it's easy enough to adapt the value to almost anything users want. Here's the top of my `.ansible.cfg`{.highlighter-rouge} showing how the source template file's modification timestamp is formatted with `strftime(3)`{.highlighter-rouge} tokens:
+
+<figure class="highlight">
+<div class="sourceCode" id="cb1" data-lang="ini"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[defaults]</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">nocows </span><span class="ot">=</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">ansible_managed </span><span class="ot">=</span><span class="st"> Ansible managed: {file} modified on %Y-%m-%d %H:%M:%S by {uid} on {host}</span></span></code></pre></div>
+</figure>
+
+The other tokens are `{file}`{.highlighter-rouge} which contains the full path to the source template, `{host}`{.highlighter-rouge} which is the controller's hostname, and `{uid}`{.highlighter-rouge}, the owner name of the source template.
+
+There might well be problems with this format on some VCS or remote file system, and quite a few issues have been reported, so configure it as you wish. A different language? Why not?
+
+<figure class="highlight">
+<div class="sourceCode" id="cb1" data-lang="ini"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">ansible_managed </span><span class="ot">=</span><span class="st"> Cambiado por {uid}</span></span></code></pre></div>
+</figure>
+
+Meanwhile [certain deprecations](https://github.com/ansible/ansible/issues/17947) reportedly having been suggested by developers include
+
+-   `{host}`{.highlighter-rouge} should expand to the inventory hostname rather than the controller hostname
+-   `{file}`{.highlighter-rouge} should expand to the destination file rather than the template file.
+
+both of which quite definitely are not the intended behaviour, on the contrary: if I'm looking at the templated file on the remote node, I *know* on which host I am, and I *know* the name of the file! I want to know where the file came *from*, which is why we designed it thusly.
+
+I still believe `{{ ansible_managed }}`{.highlighter-rouge} is a good idea, and as it's configurable, we can all use it as we wish, and I for one, hope the variable won't be removed.
+
+Happy templating!
+
+## Updates
+
+Somebody asked on Mastodon how they could add the last git commit to this variable. It's not possible to append to `{{ ansible_managed }}`{.highlighter-rouge} without modifying the code, but a *lookup plugin* in the template does the trick:
+
+<figure class="highlight">
+<pre class="jinja2" data-lang="jinja2"><code># {{ ansible_managed }}
+# commit: {{ lookup(&#39;pipe&#39;, &#39;git rev-parse --short HEAD&#39;) }}</code></pre>
+</figure>
+
+Mohamad writes to say:
+
+> I store my Ansible templates store my Ansible templates in a git repo with my playbooks & roles. I wanted to include the last commit (plus date and author) that touched the template file in `ansible_managed`{.highlighter-rouge}. I was able to accomplish that by putting this (ugly) config line in my `ansible.cfg`{.highlighter-rouge} (yes, the double-braces are on purpose):
+
+``` highlight
+[defaults]
+ansible_managed = "$Ansible {{{{ template_path|basename + lookup('pipe', 'git log --format=",%%h %%ad %%ae" -1 --date=format:"%%Y/%%m/%%d %%H:%%M" ' + template_fullpath|quote)|default(",UNCOMMITED", True) }}}}$"
+```
+
+Now his config headers look like this:
+
+``` highlight
+# $Ansible ntpd.conf.j2,cf1cb74 2022/04/10 13:30 self@example.com$
+```
+
+unless a file is still uncommitted, in which case the header will show up like so:
+
+``` highlight
+# $Ansible ntpd.conf.j2,UNCOMMITED$
+```
+
+[\<Earlier](/2020/09/27/it-used-to-be-simpler/)
+[Later\>](/2020/10/04/airports-of-the-world/)
+
+ansible :: [29 Sep 2020](/2020/09/29/using-ansible-managed/ "Link to this article") :: [e-mail](mailto:?X-site=jpmens.net&subject=Using%20%7B%7B%20ansible_managed%20%7D%7D%20in%20Ansible%20templates&body=You%20might%20like%20this:%20https://jpmens.net/2020/09/29/using-ansible-managed/ "e-mail link to this article")

@@ -2,9 +2,9 @@
 
 ## Tags
 
-#pdf #documents #pictures
+#pdf #documents #pictures #json #diff
 
-## Notes
+## Document and Image Conversion
 
 ```sh
 pandoc file.md -f gfm -t dokuwiki -o file.wiki  # convert GitHub Markdown to DokuWiki format
@@ -18,4 +18,31 @@ convert /path/to/file -resize 50% /path/to/output  # resize image by 50%
 convert -coalesce file.gif out.png  # extract gif images
 heif-convert "$f" ${f/%.HEIC/.JPG}  # convert HEIC images
 ffmpeg -i "$f" "${f%.webp}.jpg"  # convert webp images
+```
+
+## Comparing
+
+```sh
+fdupes --recurse --reverse --delete --noprompt .  # delete old duplicate images
+diff -Nur oldfile newfile > patchfile  # produce a patch file
+diff -q directory-1/ directory-2/  # compare two directories
+
+# compare two files
+vimdiff file1 file2
+code --diff file1 file2
+sdiff -s file1 file2
+comm -12 < (sort file1) < (sort file2)
+```
+
+## Manipulation
+
+```sh
+jq -Rsa '.' < file.json  # escapes alll newlines and slashes
+index_name="${indexes[$i]%$'\n'}"  # removes newlines from the array value
+```
+
+## Substitution
+
+```sh
+${vcs_info_msg_0_/(#s):(#e)/}  # remove stand-alone color (i.e. '^:$')
 ```

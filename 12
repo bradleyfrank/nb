@@ -1,0 +1,456 @@
+# How to Start Stop and List Proxmox VE Virtual Machines via the CLI (www.servethehome.com)
+
+<https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/>
+
+## Description
+
+We have a quick guide if you need to use the CLI shell in Proxmox VE to list, start, stop, restart, shutdown, suspend, or resume VMs
+
+## Tags
+
+#proxmox
+
+## Content
+
+[
+Facebook](https://www.facebook.com/ServeTheHome/ "Facebook"){target="_blank"}
+[
+Instagram](https://www.instagram.com/servethehome/ "Instagram"){target="_blank"}
+[
+Linkedin](https://www.linkedin.com/company/servethehome-com/ "Linkedin"){target="_blank"}
+[
+RSS](http://feeds.feedburner.com/servethehome "RSS"){target="_blank"}
+[
+TikTok](https://www.tiktok.com/@servethehome "TikTok"){target="_blank"}
+[
+Twitter](https://twitter.com/servethehome "Twitter"){target="_blank"}
+[
+Youtube](https://www.youtube.com/ServeTheHomeVideo?sub_confirmation=1 "Youtube"){target="_blank"}
+
+-   [[Forums](https://forums.servethehome.com "ServeTheHome Fourms")]{#menu-item-13400}
+-   [[AI](https://www.servethehome.com/category/ai-deep-learning/)]{#menu-item-27968}
+-   [[Server](https://www.servethehome.com/category/server-parts/ "Server Parts | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2624}
+    -   [[Server Systems](https://www.servethehome.com/category/server-parts/server-systems/)]{#menu-item-27771}
+    -   [[Server CPUs](https://www.servethehome.com/category/server-parts/cpus/ "Server CPUs | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2623}
+    -   [[Accelerators](https://www.servethehome.com/category/server-parts/accelerators/)]{#menu-item-39485}
+    -   [[Server Motherboards](https://www.servethehome.com/category/server-parts/motherboards/ "Server Motherboards | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2617}
+    -   [[Server Chassis](https://www.servethehome.com/category/server-parts/server-chassis/ "Server Chassis | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2622}
+    -   [[Other Components](https://www.servethehome.com/category/server-parts/other-components/ "Non-drive computer components | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2618}
+-   [[5G Edge](https://www.servethehome.com/category/edge/)]{#menu-item-40047}
+-   [[Storage](https://www.servethehome.com/category/storage/ "Storage | ServetheHome | Home and Small Business Servers | Reviews")]{#menu-item-27772}
+-   [[Networking](https://www.servethehome.com/category/networking/ "Networking | ServetheHome | Home and Small Business Servers | Reviews")]{#menu-item-18451}
+-   [[Workstation](https://www.servethehome.com/category/workstations/ "Workstation Hardware | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-5976}
+    -   [[Workstation Processors](https://www.servethehome.com/category/workstations/workstation-processors/ "Workstation Processors | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-5978}
+    -   [[Workstation Motherboards](https://www.servethehome.com/category/workstations/workstation-motherboards/ "Workstation Motherboards | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-5977}
+-   [[Software](https://www.servethehome.com/category/server-software/ "Server Software | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2625}
+    -   [[Operating Systems](https://www.servethehome.com/category/server-software/operating-systems/ "Operating Systems | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2619}
+    -   [[Server Applications](https://www.servethehome.com/category/server-software/server-applications/ "Server Applications | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2621}
+    -   [[Virtualization](https://www.servethehome.com/category/server-software/virtualization-other/ "Virtualization | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2628}
+-   [[Guides](https://www.servethehome.com/buyers-guides/ "Buyer’s Guides | ServetheHome | Home and Small Business Servers | Reviews")]{#menu-item-18659}
+    -   [[Buyer's Guides](https://www.servethehome.com/category/client-tips-and-tricks/buyers-guides/ "Buyer Guides | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-5975}
+    -   [[Tips](https://www.servethehome.com/category/client-tips-and-tricks/ "Client Tips | ServetheHome | Home Servers | Small Business Servers | Reviews")]{#menu-item-2613}
+    -   [[Top Hardware Components for TrueNAS / FreeNAS NAS Servers](https://www.servethehome.com/buyers-guides/top-hardware-components-for-truenas-freenas-nas-servers/)]{#menu-item-21976}
+    -   [[Top Hardware Components for pfSense Appliances](https://www.servethehome.com/buyers-guides/top-hardware-components-pfsense-appliances/)]{#menu-item-18717}
+    -   [[Top Hardware Components for napp-it and Solarish NAS Servers](https://www.servethehome.com/buyers-guides/top-hardware-components-napp-omnios-nas-servers/)]{#menu-item-21975}
+    -   [[Top Picks for Windows Server 2016 Essentials Hardware](https://www.servethehome.com/buyers-guides/top-picks-windows-server-2016-essentials-hardware/)]{#menu-item-21974}
+    -   [[The DIY WordPress Hosting Server Hardware Guide](https://www.servethehome.com/buyers-guides/the-diy-wordpress-hosting-server-hardware-guide/)]{#menu-item-22282}
+
+Search
+
+[
+Facebook](https://www.facebook.com/ServeTheHome/ "Facebook"){target="_blank"}
+[
+Instagram](https://www.instagram.com/servethehome/ "Instagram"){target="_blank"}
+[
+Linkedin](https://www.linkedin.com/company/servethehome-com/ "Linkedin"){target="_blank"}
+[
+RSS](http://feeds.feedburner.com/servethehome "RSS"){target="_blank"}
+[
+TikTok](https://www.tiktok.com/@servethehome "TikTok"){target="_blank"}
+[
+Twitter](https://twitter.com/servethehome "Twitter"){target="_blank"}
+[
+Youtube](https://www.youtube.com/ServeTheHomeVideo?sub_confirmation=1 "Youtube"){target="_blank"}
+
+Monday, February 19, 2024
+
+-   [[News](https://www.servethehome.com/category/news/)]{#menu-item-21967}
+-   [[Storage Reliability](https://www.servethehome.com/raid-calculator/ "RAID Calculator | ServetheHome | Home and Small Business Servers")]{#menu-item-4592}
+    -   [[Raid Calculator](https://www.servethehome.com/raid-calculator/ "Raid Calculator | Raid Disk Space Utilization Calculator | ServeTheHome")]{#menu-item-6252}
+    -   [[RAID Reliability Calculator \| Simple MTTDL Model](https://www.servethehome.com/raid-calculator/raid-reliability-calculator-simple-mttdl-model/ "RAID Reliability Calculator | ServetheHome | Home Servers and Small Business Servers")]{#menu-item-6251}
+-   [[Contact](https://www.servethehome.com/contact/ "ServetheHome | Contact | Home and Small Business Servers | Reviews")]{#menu-item-2604}
+-   [[About](https://www.servethehome.com/about/ "About Servethehome | Home Servers | Small Business Servers | Reviews"){rel="a hrefhttpsplusgooglecom109412257237874861202relauthor relmeGooglea"}]{#menu-item-2605}
+    -   [[Editorial and Copyright Policies](https://www.servethehome.com/about/editorial-copyright-policies/)]{#menu-item-7203}
+-   [[Subscribe](https://eepurl.com/dryM09 "Subscribe to the ServetheHome Newsletter")]{#menu-item-4203}
+-   [[STH Forums](https://forums.servethehome.com "Forums | ServetheHome | Home and Small Business Servers | Reviews")]{#menu-item-2607}
+
+[](#){.td-back-button aria-label="Back"}
+
+Sign in
+
+Welcome! Log into your account
+
+your username
+
+your password
+
+[Forgot your password? Get help](#){#forgot-pass-link}
+
+[Privacy Policy](https://www.servethehome.com/about/data-processing-and-privacy-policy/){.privacy-policy-link}
+
+Password recovery
+
+Recover your password
+
+your email
+
+A password will be e-mailed to you.
+
+[![](https://www.servethehome.com/wp-content/uploads/2019/10/STH-Logo-96px.png){.td-retina-data retina="https://www.servethehome.com/wp-content/uploads/2019/10/STH-Logo-180px.png" width="221" height="96"}
+ServeTheHome](https://www.servethehome.com/){.td-main-logo}
+
+Advertisement\
+\
+\
+
+[](#){role="button" aria-label="Menu"}
+
+[![](https://www.servethehome.com/wp-content/uploads/2019/10/STH-Logo-48px.png){.td-retina-data retina="https://www.servethehome.com/wp-content/uploads/2019/10/STH-Logo-96px.png" width="106" height="48"}](https://www.servethehome.com/){.td-mobile-logo .td-sticky-disable aria-label="Logo"}
+[![](https://www.servethehome.com/wp-content/uploads/2019/10/STH-Logo-96px.png){.td-retina-data retina="https://www.servethehome.com/wp-content/uploads/2019/10/STH-Logo-180px.png" width="221" height="96"}](https://www.servethehome.com/){.td-header-logo .td-sticky-disable aria-label="Logo"}
+
+-   [Forums](https://forums.servethehome.com "ServeTheHome Fourms")
+-   [AI](https://www.servethehome.com/category/ai-deep-learning/)
+-   [Server](https://www.servethehome.com/category/server-parts/ "Server Parts | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Server Systems](https://www.servethehome.com/category/server-parts/server-systems/)
+    -   [Server CPUs](https://www.servethehome.com/category/server-parts/cpus/ "Server CPUs | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Accelerators](https://www.servethehome.com/category/server-parts/accelerators/)
+    -   [Server Motherboards](https://www.servethehome.com/category/server-parts/motherboards/ "Server Motherboards | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Server Chassis](https://www.servethehome.com/category/server-parts/server-chassis/ "Server Chassis | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Other Components](https://www.servethehome.com/category/server-parts/other-components/ "Non-drive computer components | ServetheHome | Home Servers | Small Business Servers | Reviews")
+-   [5G Edge](https://www.servethehome.com/category/edge/)
+-   [Storage](https://www.servethehome.com/category/storage/ "Storage | ServetheHome | Home and Small Business Servers | Reviews")
+-   [Networking](https://www.servethehome.com/category/networking/ "Networking | ServetheHome | Home and Small Business Servers | Reviews")
+-   [Workstation](https://www.servethehome.com/category/workstations/ "Workstation Hardware | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Workstation Processors](https://www.servethehome.com/category/workstations/workstation-processors/ "Workstation Processors | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Workstation Motherboards](https://www.servethehome.com/category/workstations/workstation-motherboards/ "Workstation Motherboards | ServetheHome | Home Servers | Small Business Servers | Reviews")
+-   [Software](https://www.servethehome.com/category/server-software/ "Server Software | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Operating Systems](https://www.servethehome.com/category/server-software/operating-systems/ "Operating Systems | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Server Applications](https://www.servethehome.com/category/server-software/server-applications/ "Server Applications | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Virtualization](https://www.servethehome.com/category/server-software/virtualization-other/ "Virtualization | ServetheHome | Home Servers | Small Business Servers | Reviews")
+-   [Guides](https://www.servethehome.com/buyers-guides/ "Buyer’s Guides | ServetheHome | Home and Small Business Servers | Reviews")
+    -   [Buyer's Guides](https://www.servethehome.com/category/client-tips-and-tricks/buyers-guides/ "Buyer Guides | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Tips](https://www.servethehome.com/category/client-tips-and-tricks/ "Client Tips | ServetheHome | Home Servers | Small Business Servers | Reviews")
+    -   [Top Hardware Components for TrueNAS / FreeNAS NAS Servers](https://www.servethehome.com/buyers-guides/top-hardware-components-for-truenas-freenas-nas-servers/)
+    -   [Top Hardware Components for pfSense Appliances](https://www.servethehome.com/buyers-guides/top-hardware-components-pfsense-appliances/)
+    -   [Top Hardware Components for napp-it and Solarish NAS Servers](https://www.servethehome.com/buyers-guides/top-hardware-components-napp-omnios-nas-servers/)
+    -   [Top Picks for Windows Server 2016 Essentials Hardware](https://www.servethehome.com/buyers-guides/top-picks-windows-server-2016-essentials-hardware/)
+    -   [The DIY WordPress Hosting Server Hardware Guide](https://www.servethehome.com/buyers-guides/the-diy-wordpress-hosting-server-hardware-guide/)
+
+[](#){#td-header-search-button .dropdown-toggle role="button" aria-label="Search" toggle="dropdown"}
+[](#){#td-header-search-button-mob .dropdown-toggle role="button" aria-label="Search" toggle="dropdown"}
+
+[Home](https://www.servethehome.com/){.entry-crumb} [Software](https://www.servethehome.com/category/server-software/ "View all posts in Software"){.entry-crumb} [Virtualization](https://www.servethehome.com/category/server-software/virtualization-other/ "View all posts in Virtualization"){.entry-crumb} How to Start Stop and List Proxmox VE Virtual Machines via the\...
+
+-   [Software](https://www.servethehome.com/category/server-software/)
+-   [Virtualization](https://www.servethehome.com/category/server-software/virtualization-other/)
+
+# How to Start Stop and List Proxmox VE Virtual Machines via the CLI {#how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli .entry-title}
+
+By
+
+[Eric Smith](https://www.servethehome.com/author/ericsmith/)
+
+\-
+
+February 18, 2024
+
+[5](https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/#comments)
+
+[](https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.servethehome.com%2Fhow-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli%2F "Facebook"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-facebook}
+
+Facebook
+
+[](https://twitter.com/intent/tweet?text=How+to+Start+Stop+and+List+Proxmox+VE+Virtual+Machines+via+the+CLI&url=https%3A%2F%2Fwww.servethehome.com%2Fhow-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli%2F&via=ServeTheHome "Twitter"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-twitter}
+
+Twitter
+
+[](https://pinterest.com/pin/create/button/?url=https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/&media=https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-scaled.jpg&description=We%20have%20a%20quick%20guide%20if%20you%20need%20to%20use%20the%20CLI%20shell%20in%20Proxmox%20VE%20to%20list,%20start,%20stop,%20restart,%20shutdown,%20suspend,%20or%20resume%20VMs "Pinterest"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-pinterest}
+
+Pinterest
+
+[](https://www.linkedin.com/shareArticle?mini=true&url=https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/&title=How+to+Start+Stop+and+List+Proxmox+VE+Virtual+Machines+via+the+CLI "Linkedin"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-linkedin}
+
+Linkedin
+
+[](mailto:?subject=How%20to%20Start%20Stop%20and%20List%20Proxmox%20VE%20Virtual%20Machines%20via%20the%20CLI&body=https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/ "Email"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-mail}
+
+Email
+
+[](# "Print"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-print}
+
+Print
+
+[](https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/ "Copy URL"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-copy_url}
+
+Copy URL
+
+[](# "More"){.td-social-sharing-button .td-social-handler .td-social-expand-tabs block-uid="td_social_sharing_article_top"}
+
+<figure>
+<a href="https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-scaled.jpg" data-caption="ASRock Rack Proxmox VE 8.1 HTML5 IKVM"><img src="https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-696x432.jpg" title="ASRock Rack Proxmox VE 8.1 HTML5 IKVM" class="entry-thumb td-modal-image" srcset="https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-696x432.jpg 696w, https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-400x248.jpg 400w, https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-800x497.jpg 800w, https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-1536x954.jpg 1536w, https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-2048x1272.jpg 2048w, https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-1068x663.jpg 1068w, https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-1920x1192.jpg 1920w, https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-676x420.jpg 676w, https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-356x220.jpg 356w" sizes="(max-width: 696px) 100vw, 696px" width="696" height="432" alt="ASRock Rack Proxmox VE 8.1 HTML5 IKVM" /></a>
+<figcaption>ASRock Rack Proxmox VE 8.1 HTML5 IKVM</figcaption>
+</figure>
+
+Sometimes, you cannot get to the Proxmox VE web GUI for one reason or another, or you simply prefer the CLI. We thought we would put the three basic commands you need in one place to start, stop, and list virtual machines in the Proxmox VE UI.
+
+## How to List Proxmox VE Virtual Machines via the CLI
+
+Listing the virtual machines is perhaps the most important function. The listing gives you the VM name, but also the VMID
+
+`qm list`
+
+The output of this command will help a lot when it comes to finding VMs via the CLI. Here we can see VMID 100 is a pfSense VM.
+
+<figure id="attachment_76197" class="wp-caption alignnone" aria-describedby="caption-attachment-76197" style="width: 696px">
+<a href="https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/proxmox-ve-qm-list/" rel="attachment wp-att-76197"><img src="https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-List-800x74.jpg" class="size-large wp-image-76197" decoding="async" srcset="https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-List-800x74.jpg 800w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-List-400x37.jpg 400w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-List-696x64.jpg 696w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-List.jpg 910w" sizes="(max-width: 696px) 100vw, 696px" width="696" height="64" alt="Proxmox VE QM List" /></a>
+<figcaption>Proxmox VE QM List</figcaption>
+</figure>
+
+This VMID, or 100 in this case, is the VMID we use for other qm commands.
+
+## How to Start Proxmox VE Virtual Machines via the CLI
+
+Starting a VM in Promxox VE using the CLI, then using this VMID. Here, we can use qm start and then the VMID for the virtual machine to start it.
+
+`qm start VMID`
+
+Here is an example using that pfSense VM that has a VMID of 100.
+
+<figure id="attachment_76198" class="wp-caption alignnone" aria-describedby="caption-attachment-76198" style="width: 696px">
+<a href="https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/proxmox-ve-qm-start/" rel="attachment wp-att-76198"><img src="https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Start-800x91.jpg" class="size-large wp-image-76198" data-fetchpriority="high" decoding="async" srcset="https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Start-800x91.jpg 800w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Start-400x45.jpg 400w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Start-696x79.jpg 696w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Start.jpg 979w" sizes="(max-width: 696px) 100vw, 696px" width="696" height="79" alt="Proxmox VE QM Start" /></a>
+<figcaption>Proxmox VE QM Start</figcaption>
+</figure>
+
+The qm start command usually takes a few seconds. After it returns to the prompt, you can do qm list again and verify it is running.
+
+## How to Stop Proxmox VE Virtual Machines via the CLI
+
+Stopping VMs, there are a few methods that you need to be aware of. Shutdown, stop, and reset are all very important.
+
+To shutdown the VM by sending the poweroff signal, use
+
+`qm shutdown VMID`
+
+If you want to stop a VM immediately, perhaps because it misbehaves, use the qm stop command instead.
+
+`qm stop VMID`
+
+Here is an example of the qm stop command using that pfSense VM with a VMID of 100:
+
+<figure id="attachment_76199" class="wp-caption alignnone" aria-describedby="caption-attachment-76199" style="width: 696px">
+<a href="https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/proxmox-ve-qm-stop/" rel="attachment wp-att-76199"><img src="https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Stop-800x89.jpg" class="size-large wp-image-76199" decoding="async" srcset="https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Stop-800x89.jpg 800w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Stop-400x45.jpg 400w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Stop-696x78.jpg 696w, https://www.servethehome.com/wp-content/uploads/2024/02/Proxmox-VE-QM-Stop.jpg 951w" sizes="(max-width: 696px) 100vw, 696px" width="696" height="77" alt="Proxmox VE QM Stop" /></a>
+<figcaption>Proxmox VE QM Stop</figcaption>
+</figure>
+
+A quick note here is that some VMs, especially those with old or funky OSes, might not respond to the qm shutdown command so you can instead use qm stop.
+
+## How to Suspend and Resume Proxmox VE Virtual Machines via the CLI
+
+Sometimes you want to keep the state of a VM, but do not want to stop it. Instead, you would want to resume the virtual machine at a later time. That is where you would use qm suspend and qm resume commands.
+
+`qm suspend VMID`
+
+Here is the resume command:
+
+`qm resume VMID`
+
+Note here that both suspend and resume generally take a few seconds so if you see the shell pause for a few seconds, do not worry here.
+
+## How to Restart Proxmox VE Virtual Machines via the CLI
+
+As you may have guessed by now, if you want to restart a Proxmox VE VM via the CLI, the command is:
+
+`qm restart VMID`
+
+Hopefully, that makes sense.
+
+## Final Words
+
+Using the qm commands extends beyond Proxmox VE server. Proxmox VE uses KVM virtualization and qemu like other Linux virtualization setups. Still, the commands make a lot of sense so long as you remember "qm" is the command, and to find a VMID via the shell you would use the list command.
+
+These days, the Proxmox VE web GUI is more stable, so this is less necessary, but it can be very helpful if you need to issue VM commands over the CLI in situations like ones with limited bandwidth or blocked web GUI access. These qm commands are also useful for scripting. If you have a VM that periodically just fails, you can use a cron job with qm restart, for example, to fix that issue.
+
+Hopefully, this helps folks and is an easy reference if you ever need it.
+
+-   TAGS
+-   [KVM](https://www.servethehome.com/tag/kvm/)
+-   [Proxmox](https://www.servethehome.com/tag/proxmox/)
+-   [Proxmox VE](https://www.servethehome.com/tag/proxmox-ve/)
+-   [virtualization](https://www.servethehome.com/tag/virtualization/)
+
+::: iframe
+## Update Your Browser {#update-your-browser .ptl .pbm ._6n ._6s ._6v}
+
+You're using a web browser that isn't supported by Facebook.\
+To get a better experience, go to one of these sites and get the latest version of your preferred browser:
+
+[](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.google.com%2Fchrome%2Fbrowser%2F&h=AT2eNcBP6FRqYWCkMZZWE-P2AhvvC50vLqe-UE5Hgj7I71duTwve4Je6xf7DjkKyAuYqnKEQbaMpx2GuuD1NRceL_LCIbTXL9_eVMvhsCCbHNnslGFjufQM_GK89fCM-i0ZAqNT9RVbMRxlN){.unsupportedBrowserBrowser .mvl .pvm .phl target="_blank" rel="nofollow" lynx-mode="hover"}
+
+Google Chrome
+
+[](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.mozilla.org%2Ffirefox%2Fnew%2F%3Futm_source%3Dfacebook%26utm_medium%3Dreferral%26utm_campaign%3Dunsupported-browser-notification&h=AT3855b8m9Zc27OQ5qG9ojtlvg6wB1f4FXTHhCvMQgBXmxoBcsxtTZpUMBlIRKzeLQKaQ4YvcFcng08gXcf3NhLB6U48vKcxGzE4-dMj4ICT9XDCj7Zg8-CPog65Lmcrpgb0_1qRNXYCygVc){.unsupportedBrowserBrowser .mvl .pvm .phl target="_blank" rel="nofollow" lynx-mode="hover"}
+
+Mozilla Firefox
+
+[](/mobile){.unsupportedBrowserMobile .mtl}
+
+Get Facebook on Your Phone
+
+Stay connected anytime, anywhere.
+:::
+
+[](https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.servethehome.com%2Fhow-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli%2F "Facebook"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-facebook}
+
+Facebook
+
+[](https://twitter.com/intent/tweet?text=How+to+Start+Stop+and+List+Proxmox+VE+Virtual+Machines+via+the+CLI&url=https%3A%2F%2Fwww.servethehome.com%2Fhow-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli%2F&via=ServeTheHome "Twitter"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-twitter}
+
+Twitter
+
+[](https://pinterest.com/pin/create/button/?url=https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/&media=https://www.servethehome.com/wp-content/uploads/2023/11/ASRock-Rack-Proxmox-VE-8.1-HTML5-iKVM-scaled.jpg&description=We%20have%20a%20quick%20guide%20if%20you%20need%20to%20use%20the%20CLI%20shell%20in%20Proxmox%20VE%20to%20list,%20start,%20stop,%20restart,%20shutdown,%20suspend,%20or%20resume%20VMs "Pinterest"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-pinterest}
+
+Pinterest
+
+[](https://www.linkedin.com/shareArticle?mini=true&url=https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/&title=How+to+Start+Stop+and+List+Proxmox+VE+Virtual+Machines+via+the+CLI "Linkedin"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-linkedin}
+
+Linkedin
+
+[](mailto:?subject=How%20to%20Start%20Stop%20and%20List%20Proxmox%20VE%20Virtual%20Machines%20via%20the%20CLI&body=https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/ "Email"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-mail}
+
+Email
+
+[](# "Print"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-print}
+
+Print
+
+[](https://www.servethehome.com/how-to-start-stop-and-list-proxmox-ve-virtual-machines-via-the-cli/ "Copy URL"){.td-social-sharing-button .td-social-sharing-button-js .td-social-network .td-social-copy_url}
+
+Copy URL
+
+[](# "More"){.td-social-sharing-button .td-social-handler .td-social-expand-tabs block-uid="td_social_sharing_article_bottom"}
+
+Previous article[QNAP TR-004 USB RAID Enclosure Review](https://www.servethehome.com/qnap-tr-004-usb-raid-enclosure-review-seagate-wd/)
+
+Next article[VMware VCSP Customers Seeing 10x or More Cost Increases Under Broadcom](https://www.servethehome.com/vmware-vcsp-customers-seeing-10x-or-more-cost-increases-under-broadcom/)
+
+[](https://www.servethehome.com/author/ericsmith/){aria-label="author-photo"}
+
+[Eric Smith](https://www.servethehome.com/author/ericsmith/)
+
+<https://www.servethehome.com>
+
+Eric has been in the IT industry for over 15 years and specializes in infrastructure projects.
+
+#### [RELATED ARTICLES](#){#tdi_4 .td-related-left .td-cur-simple-item td_filter_value="" td_block_id="tdi_3"}[MORE FROM AUTHOR](#){#tdi_5 .td-related-right td_filter_value="td_related_more_from_author" td_block_id="tdi_3"} {#related-articlesmore-from-author .td-related-title .td-block-title}
+
+[![VMware VSphere Client With NVIDIA BlueField 2 DPU And ESXi 8.0 Host New VM UPT Activated Post Driver](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC "VMware VCSP Customers Seeing 10x or More Cost Increases Under Broadcom"){.entry-thumb data-type="image_tag" img-url="https://www.servethehome.com/wp-content/uploads/2023/03/VMware-vSphere-Client-with-NVIDIA-BlueField-2-DPU-and-ESXi-8.0-Host-New-VM-UPT-Activated-Post-Driver-218x150.jpg" width="218" height="150"}](https://www.servethehome.com/vmware-vcsp-customers-seeing-10x-or-more-cost-increases-under-broadcom/ "VMware VCSP Customers Seeing 10x or More Cost Increases Under Broadcom"){.td-image-wrap rel="bookmark"}
+
+### [VMware VCSP Customers Seeing 10x or More Cost Increases Under Broadcom](https://www.servethehome.com/vmware-vcsp-customers-seeing-10x-or-more-cost-increases-under-broadcom/ "VMware VCSP Customers Seeing 10x or More Cost Increases Under Broadcom"){rel="bookmark"} {#vmware-vcsp-customers-seeing-10x-or-more-cost-increases-under-broadcom .entry-title .td-module-title}
+
+[![VMware VSphere Hypervisor Free Edition End](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC "Broadcom VMware Ends Free VMware vSphere Hypervisor Closing an Era"){.entry-thumb data-type="image_tag" img-url="https://www.servethehome.com/wp-content/uploads/2024/02/VMware-vSphere-Hypervisor-Free-Edition-End-218x150.jpg" width="218" height="150"}](https://www.servethehome.com/broadcom-vmware-ends-free-vmware-vsphere-hypervisor-closing-an-era/ "Broadcom VMware Ends Free VMware vSphere Hypervisor Closing an Era"){.td-image-wrap rel="bookmark"}
+
+### [Broadcom VMware Ends Free VMware vSphere Hypervisor Closing an Era](https://www.servethehome.com/broadcom-vmware-ends-free-vmware-vsphere-hypervisor-closing-an-era/ "Broadcom VMware Ends Free VMware vSphere Hypervisor Closing an Era"){rel="bookmark"} {#broadcom-vmware-ends-free-vmware-vsphere-hypervisor-closing-an-era .entry-title .td-module-title}
+
+[![Broadcom Stingray PS225 H16 Front 4](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC "VMware Updates its EOA Plan Providing Guidance for Some Subscription Transition"){.entry-thumb data-type="image_tag" img-url="https://www.servethehome.com/wp-content/uploads/2022/05/Broadcom-Stingray-PS225-H16-Front-4-218x150.jpg" width="218" height="150"}](https://www.servethehome.com/vmware-updates-its-eoa-plan-providing-guidance-for-some-subscription-transition-broadcom/ "VMware Updates its EOA Plan Providing Guidance for Some Subscription Transition"){.td-image-wrap rel="bookmark"}
+
+### [VMware Updates its EOA Plan Providing Guidance for Some Subscription Transition](https://www.servethehome.com/vmware-updates-its-eoa-plan-providing-guidance-for-some-subscription-transition-broadcom/ "VMware Updates its EOA Plan Providing Guidance for Some Subscription Transition"){rel="bookmark"} {#vmware-updates-its-eoa-plan-providing-guidance-for-some-subscription-transition .entry-title .td-module-title}
+
+[](#){#prev-page-tdi_3 .td-ajax-prev-page .ajax-page-disabled aria-label="prev-page" td_block_id="tdi_3"}[](#){#next-page-tdi_3 .td-ajax-next-page aria-label="next-page" td_block_id="tdi_3"}
+
+#### 5 COMMENTS {#comments .td-comments-title .block-title}
+
+1.  [James Last
+    [February 18, 2024 At 11:15 pm](#comment-524407){.comment-link}]{#comment-524407}
+
+    Can you write an article/manual about how to transfer vm's from VMware to Proxmox, please.
+
+    This is very relevant with the current situation of VMware and Proxmox can replace it fully in my view.
+
+2.  [Miha
+    [February 19, 2024 At 12:37 am](#comment-524417){.comment-link}]{#comment-524417}
+
+    Re: transfer from VMWare ESXi. I've done this a long time ago. At that time I had to setup each VM hw by hand. AFAIr I used qemu-img to convert vmdk files to qcow for qemu to consume.
+
+3.  [Kyle
+    [February 19, 2024 At 12:55 am](#comment-524421){.comment-link}]{#comment-524421}
+
+    \@James Last: VMware is able to export VMs to a portable format called OVF. Proxmox can import them with with "qm importovf".\
+    The entire procedure including planning is described on Proxmox's wiki -- [https://pve.proxmox.com/wiki/Migrate_to_Proxmox_VE](https://pve.proxmox.com/wiki/Migrate_to_Proxmox_VE){rel="nofollow ugc"}
+
+4.  [Lawrence
+    [February 19, 2024 At 1:43 am](#comment-524431){.comment-link}]{#comment-524431}
+
+    You forgot the command to put a host in maintenance mode
+
+5.  [Gabriele+Fronzé
+    [February 19, 2024 At 1:49 am](#comment-524433){.comment-link}]{#comment-524433}
+
+    Proxmox is failing short on one specific thing, namely the use of standard tools.\
+    It is disturbing not being able to just use virsh base commands, and that's something I never really understood.\
+    In my opinion the future should be a smart hypervisor built on top as-standard-as-possible Linux, and that's not what Proxmox seems to offer.
+
+### LEAVE A REPLY {#reply-title .comment-reply-title}
+
+Please enter your comment!
+
+Please enter your name here
+
+You have entered an incorrect email address!
+
+Please enter your email address here
+
+Save my name, email, and website in this browser for the next time I comment.
+
+Sign me up for the STH newsletter!
+
+Δ
+
+This site uses Akismet to reduce spam. [Learn how your comment data is processed](https://akismet.com/privacy/){target="_blank" rel="nofollow noopener"}.
+
+\-\-- Advertisements \-\--
+
+\
+\
+\
+
+\
+\
+
+[![](https://www.servethehome.com/wp-content/uploads/2019/10/STH-Logo-96px.png){.td-retina-data retina="https://www.servethehome.com/wp-content/uploads/2019/10/STH-Logo-180px.png" width="221" height="96"}](https://www.servethehome.com/)
+
+ABOUT US
+
+ServeTheHome is the IT professional\'s guide to servers, storage, networking, and high-end workstation hardware, plus great open source projects.\
+\
+**[Advertise on STH](https://www.servethehome.com/advertise/)**\
+DISCLAIMERS: We are a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for us to earn fees by linking to Amazon.com and affiliated sites.\
+Please be advised of our data usage for machine learning and AI inference and training purposes which can be found [here](https://www.servethehome.com/about/editorial-copyright-policies/) along with our other editorial and copyright policies.
+
+FOLLOW US
+
+[
+Facebook](https://www.facebook.com/ServeTheHome/ "Facebook"){target="_blank"}
+[
+Instagram](https://www.instagram.com/servethehome/ "Instagram"){target="_blank"}
+[
+Linkedin](https://www.linkedin.com/company/servethehome-com/ "Linkedin"){target="_blank"}
+[
+RSS](http://feeds.feedburner.com/servethehome "RSS"){target="_blank"}
+[
+TikTok](https://www.tiktok.com/@servethehome "TikTok"){target="_blank"}
+[
+Twitter](https://twitter.com/servethehome "Twitter"){target="_blank"}
+[
+Youtube](https://www.youtube.com/ServeTheHomeVideo?sub_confirmation=1 "Youtube"){target="_blank"}
+
+© 2009-2023 Loyolan Ventures, LLC

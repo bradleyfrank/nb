@@ -7,3 +7,5 @@ Don't match alphanumeric or Japanese characters:
 % sed -r 's/[^一-龠ぁ-ゔァ-ヴーa-zA-Z0-9々〆〤ヶ]+/_/g' <<< $foo
 This_is_some67_Japanese_text_植松56伸夫_with_some_random_and_thrown_in_5894
 ```
+
+Match URLs: `(http|https)://[a-zA-Z0-9./?=_%:-]*`

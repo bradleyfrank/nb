@@ -1,6 +1,10 @@
 # Ansible
 
+## Tags
+
 #ansible
+
+## Notes
 
 ```sh
 # encrypt file with existing password

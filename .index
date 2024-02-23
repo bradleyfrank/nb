@@ -27,7 +27,7 @@ keygen
 patch_ssl_conf.bash
 plex-backup.bash
 psqldb
-pyenv
+pyenv.bash
 swap.bash
 upload-gists.bash
 vscode.bash

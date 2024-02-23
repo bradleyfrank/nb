@@ -20,3 +20,4 @@ aptsearch
 audit_users.bash
 collapse_pwd.bash
 diceware.zsh
+find_between_dates.bash

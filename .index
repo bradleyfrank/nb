@@ -21,7 +21,7 @@ audit_users.bash
 collapse_pwd.bash
 diceware.zsh
 find_between_dates.bash
-ghpr
+ghpr.bash
 install-gnome-extensions.bash
 keygen.bash
 patch_ssl_conf.bash

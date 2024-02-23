@@ -22,3 +22,4 @@ collapse_pwd.bash
 diceware.zsh
 find_between_dates.bash
 ghpr
+install-gnome-extensions.bash

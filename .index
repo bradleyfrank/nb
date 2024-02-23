@@ -30,3 +30,4 @@ reposyncer.py
 ssh_keygen.py
 system.py
 tmux-2.9-convert.py
+vaultenv.py

@@ -28,3 +28,4 @@ patch_ssl_conf.bash
 plex-backup.bash
 psqldb
 pyenv
+swap.bash

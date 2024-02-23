@@ -26,7 +26,7 @@ install-gnome-extensions.bash
 keygen
 patch_ssl_conf.bash
 plex-backup.bash
-psqldb
+psqldb.bash
 pyenv.bash
 swap.bash
 upload-gists.bash

@@ -18,3 +18,4 @@ add_to_known_hosts.bash
 apache_report.bash
 aptsearch
 audit_users.bash
+collapse_pwd.bash

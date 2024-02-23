@@ -25,3 +25,4 @@ ghpr
 install-gnome-extensions.bash
 keygen
 patch_ssl_conf.bash
+plex-backup.bash

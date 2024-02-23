@@ -28,3 +28,4 @@ make-local-repo.py
 manageMedia.py
 reposyncer.py
 ssh_keygen.py
+system.py

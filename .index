@@ -23,7 +23,7 @@ diceware.zsh
 find_between_dates.bash
 ghpr
 install-gnome-extensions.bash
-keygen
+keygen.bash
 patch_ssl_conf.bash
 plex-backup.bash
 psqldb.bash

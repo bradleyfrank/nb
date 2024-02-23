@@ -32,3 +32,4 @@ swap.bash
 upload-gists.bash
 vscode.bash
 bootstrap.yml
+cleanup.yml

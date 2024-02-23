@@ -9,3 +9,4 @@ imdb.py
 infrastaller.py
 is_admin.py
 make-local-repo.py
+manageMedia.py

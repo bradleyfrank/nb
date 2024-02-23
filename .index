@@ -29,5 +29,5 @@ plex-backup.bash
 psqldb
 pyenv
 swap.bash
-upload-gists
+upload-gists.bash
 vscode.bash

@@ -1,0 +1,17 @@
+add_to_known_hosts.bash
+apache_report.bash
+aptsearch
+audit_users.bash
+collapse_pwd.bash
+diceware.zsh
+find_between_dates.bash
+ghpr
+install-gnome-extensions.bash
+keygen
+patch_ssl_conf.bash
+plex-backup.bash
+pyenv
+swap.bash
+upload-gists
+vscode
+psqldb

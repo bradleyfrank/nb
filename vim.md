@@ -14,4 +14,10 @@ augroup END
 set autochdir
 
 :%bd|e#  " close all other buffers; reopen last buffer
+
+" Execute bash script; passing CWD to script
+function InsertMdLink()
+  let l:path = expand('%:p:h')
+  execute 'r!vimsert ' . l:path
+endfunction
 ```

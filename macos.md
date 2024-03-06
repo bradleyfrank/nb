@@ -2,7 +2,7 @@
 
 ## Tags
 
-#apple #mac
+#apple #mac #filesystem
 
 ## Notes
 
@@ -24,6 +24,15 @@ osascript -e 'tell application "Safari" to add reading list item "<url>"'
 sudo softwareupdate -aiR  # install macOS updates and reboot
 printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" \
   | sudo VISUAL="tee" visudo -f /etc/sudoers.d/nopasswd  # add entries to '/etc/sudoers.d'
+```
+
+Erase and format flash drives:
+
+```sh
+diskutil list
+diskutil eraseDisk free NAME /dev/diskN
+diskutil addPartition /dev/diskN APFSX NAME SIZE[%]
+diskutil mount /dev/diskNsX
 ```
 
 ### Homebrew

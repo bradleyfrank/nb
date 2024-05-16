@@ -28,3 +28,10 @@ gcloud projects get-iam-policy <YOUR GCLOUD PROJECT>  \
 --format='table(bindings.role)' \
 --filter="bindings.members:<YOUR SERVICE ACCOUNT>"
 ```
+
+Configure ADC for Python:
+
+```sh
+gcloud auth application-default login
+gcloud auth application-default set-quota-project common-billing-780115
+```

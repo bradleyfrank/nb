@@ -19,3 +19,12 @@ gcloud iam service-accounts get-iam-policy {{ sa }}  # check the IAM policy for 
 gcloud iam service-accounts add-iam-policy-binding {{ sa }} \
   --member {{ email }} --role roles/{{ role }}  # add a user to the policy
 ```
+
+How do I list the roles associated with a gcp service account?
+
+```sh
+gcloud projects get-iam-policy <YOUR GCLOUD PROJECT>  \
+--flatten="bindings[].members" \
+--format='table(bindings.role)' \
+--filter="bindings.members:<YOUR SERVICE ACCOUNT>"
+```

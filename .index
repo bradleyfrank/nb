@@ -34,3 +34,4 @@ vscode.bash
 bootstrap.yml
 cleanup.yml
 bit.py
+tmux-status

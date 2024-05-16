@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+#
+# Displays various information for the tmux status bar.
+# Author: Brad Frank
+# Date: July 2021
+# Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
+#
+
+declare -r fg_Default="#[fg=default]" \
+           fg_Yellow="#[fg=colour136]" \
+           fg_Green="#[fg=colour64]" \
+           fg_Orange="#[fg=colour166]" \
+           fg_Red="#[fg=colour160]"
+
+get_uptime() {
+  local uptime
+  uptime=$(uptime | grep -Po 'up(.*?),' | awk '$1=$1' | sed "s/up/${fg_Green}up${fg_Default}/")
+  printf "%s" "${uptime/,/}"
+}
+
+load_average() {
+  local avg load output fg_Color
+  while read -r avg; do
+    load="$(printf "%.0f" "$(echo "($avg*100)/10" | bc -l)")"
+    if   [[ $load -ge 0   && $load -lt 100 ]]; then fg_Color=$fg_Green
+    elif [[ $load -ge 100 && $load -lt 300 ]]; then fg_Color=$fg_Yellow
+    elif [[ $load -ge 300 && $load -lt 500 ]]; then fg_Color=$fg_Orange
+    elif [[ $load -ge 500                  ]]; then fg_Color=$fg_Red
+    fi
+    output+=" ${fg_Color}${avg}${fg_Default}"
+  done <<< "$(sysctl -n vm.loadavg | grep -oP '\d+\.\d+')"
+  printf "%s" "${output:1}"  # substring removes extra space
+}
+
+battery() {
+  local battery percent status fg_Color
+  IFS=';' read -ra battery <<< "$(pmset -g batt | grep -Eo '[0-9]+%;.*;')"
+  percent="${battery[0]//%/}"
+  status="${battery[1]:1}"  # substring removes extra space
+  if   [[ $percent -le 100 && $percent -ge 75 ]]; then fg_Color=$fg_Green
+  elif [[ $percent -lt 75  && $percent -ge 50 ]]; then fg_Color=$fg_Yellow
+  elif [[ $percent -lt 50  && $percent -ge 25 ]]; then fg_Color=$fg_Orange
+  elif [[ $percent -lt 25  && $percent -ge 0  ]]; then fg_Color=$fg_Red
+  fi
+
+  percent="${fg_Color}${percent}%"
+  status="${fg_Default}${status,,}"
+
+  printf "%s %s" "${percent}" "${status}"
+}
+
+distribution() {
+  local distro version system_info
+  mapfile -t system_info < <(sw_vers | awk '{print $2}' | head -n2)
+  distro="${fg_Green}${system_info[0]}"
+  version="${fg_Default}${system_info[1]}"
+  printf "%s %s" "${distro}" "${version}"
+}
+
+printf "#[bold]%s  %s  %s  %s#[nobold]" "$(battery)" "$(load_average)" "$(get_uptime)" "$(distribution)"

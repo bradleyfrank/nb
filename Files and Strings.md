@@ -20,6 +20,12 @@ heif-convert "$f" ${f/%.HEIC/.JPG}  # convert HEIC images
 ffmpeg -i "$f" "${f%.webp}.jpg"  # convert webp images
 ```
 
+## Renaming
+
+```sh
+for i in {1..20}; do ep="$(printf "S02E%02d\n" "$i")"; mv "./${ep}.mkv" "./${ep}.$(awk "NR == $i" episodes.txt).mkv"; done
+```
+
 ## Comparing
 
 ```sh

@@ -23,3 +23,10 @@ zfs create tank/parent1/child1
 zpool list
 zpool status
 ```
+
+### Replace Disk
+
+```sh
+zpool status <POOL>
+zpool offline <POOL> <WWN>
+```

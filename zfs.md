@@ -29,4 +29,10 @@ zpool status
 ```sh
 zpool status <POOL>
 zpool offline <POOL> <WWN>
+
+parted -s /dev/sdX mklabel GPT
+parted -s /dev/sdX mkpart primary 1M 100%
+
+lsblk -o NAME,WWN
+zpool replace <POOL> <OLD-WWN> <NEW-WWN>
 ```

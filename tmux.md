@@ -39,3 +39,13 @@ move() {
   done < <(printf "%s\n" "${!tmux_windows[@]}" | sort | fzf-tmux -p --multi)
 }
 ```
+
+### Rearrange tmux panes into new layout
+
+```sh
+layout() {
+  [[ -z $argc_layout ]] && argc_layout="$(_get_layouts | fzf-tmux -p --no-multi -1)"
+  [[ -z $argc_layout ]] && return 0
+  tmux select-layout "$argc_layout"
+}
+```

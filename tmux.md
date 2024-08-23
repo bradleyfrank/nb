@@ -43,6 +43,10 @@ move() {
 ### Rearrange tmux panes into new layout
 
 ```sh
+_get_layouts() {
+  tmux list-keys | sed -rn "s/^bind-key.*M-[0-9]\s+select-layout\s(.*)/\1/p"
+}
+
 layout() {
   [[ -z $argc_layout ]] && argc_layout="$(_get_layouts | fzf-tmux -p --no-multi -1)"
   [[ -z $argc_layout ]] && return 0

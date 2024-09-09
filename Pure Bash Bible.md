@@ -1,3 +1,5 @@
+# Pure Bash Bible
+
 <p align="center"><b>NEW: <a href="https://github.com/dylanaraps/pure-sh-bible">pure sh bible (📖 A collection of pure POSIX sh alternatives to external processes).</a></b></p>
 
 <br>

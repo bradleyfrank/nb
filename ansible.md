@@ -55,3 +55,10 @@ Use `dockutil` to configure Dock:
   notify: "Restart macOS dock"
   tags: [dock]
 ```
+
+```
+desktop_dockutil_spacers:
+  - "spacer"
+  - "small-spacer"
+  - "flex-spacer"
+```

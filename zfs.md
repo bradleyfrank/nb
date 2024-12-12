@@ -7,7 +7,7 @@
 ## Notes
 
 ```sh
-ls -1 /dev/disk/by-id/
+lsblk -o NAME,WWN
 
 zpool create -f tank \
   mirror \
@@ -31,7 +31,7 @@ zpool status <POOL>
 zpool offline <POOL> <WWN>
 
 parted -s /dev/sdX mklabel GPT
-parted -s /dev/sdX mkpart primary 1M 100%
+parted -s /dev/sdX mkpart 0% 100%
 
 lsblk -o NAME,WWN
 zpool replace <POOL> <OLD-WWN> <NEW-WWN>

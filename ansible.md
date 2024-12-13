@@ -66,6 +66,15 @@ desktop_dockutil_spacers:
 Import secrets into 1Password:
 
 ```yaml
+- name: "Set 1Password-cli binary to use session token"
+  vars:
+    op_account_list: "{{ cmd_op_account_list['stdout'] | from_json }}"
+    op_session_env: "OP_SESSION_{{ op_account_list[0]['user_uuid'] }}"
+    op_session_token: "{{ cmd_op_signin['stdout_lines'][1] }}"
+  ansible.builtin.set_fact:
+    op_bin: "{{ op_session_env }}={{ op_session_token }} op"
+  tags: [onepassword, auth]
+
 - name: "Retrieve Vault password from file"
   ansible.builtin.set_fact:
     # ignoring errors results in a blank string, which is the desired result

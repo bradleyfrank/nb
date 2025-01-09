@@ -116,3 +116,13 @@ Import secrets into 1Password:
         path: "{{ op_template }}"
         state: "absent"
 ```
+
+Find and print variables, dynamically:
+
+```yaml
+    - name: "Echo vars to force auth to 1Password"
+      ansible.builtin.debug:
+        msg: "{{ lookup('ansible.builtin.vars', item) }}"
+      loop: "{{ query('ansible.builtin.varnames', '^op_.+$') }}"
+      no_log: true
+```

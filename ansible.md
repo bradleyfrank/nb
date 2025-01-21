@@ -117,6 +117,37 @@ Import secrets into 1Password:
         state: "absent"
 ```
 
+Start an SSH Agent and add encrypted keys:
+
+```yaml
+- name: "Start ssh-agent"
+  ansible.builtin.shell:
+    cmd: |
+      eval $(ssh-agent -s) > /dev/null
+      echo "{\"SSH_AUTH_SOCK\":\"$SSH_AUTH_SOCK\",\"SSH_AGENT_PID\":\"$SSH_AGENT_PID\"}"
+  register: cmd_eval_ssh_agent
+  changed_when: true
+  notify: "Stop ssh-agent"
+  tags: [git, repos]
+
+- name: "Add key to ssh-agent"
+  environment: "{{ cmd_eval_ssh_agent['stdout'] }}"
+  ansible.builtin.expect:
+    command: "ssh-add {{ git_ssh_key_private }}"
+    responses:
+      passphrase: "{{ git_ssh_key_passphrase }}"
+  tags: [git, repos]
+
+
+# Handler
+- name: "Stop ssh-agent"
+  ansible.builtin.command:
+    cmd: "ssh-agent -k"
+  environment:
+    SSH_AGENT_PID: "{{ cmd_eval_ssh_agent['stdout'] | from_json | json_query('SSH_AGENT_PID') }}"
+  changed_when: false
+```
+
 Find and print variables, dynamically:
 
 ```yaml

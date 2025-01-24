@@ -128,7 +128,6 @@ Start an SSH Agent and add encrypted keys:
   register: cmd_eval_ssh_agent
   changed_when: true
   notify: "Stop ssh-agent"
-  tags: [git, repos]
 
 - name: "Add key to ssh-agent"
   environment: "{{ cmd_eval_ssh_agent['stdout'] }}"
@@ -136,8 +135,12 @@ Start an SSH Agent and add encrypted keys:
     command: "ssh-add {{ git_ssh_key_private }}"
     responses:
       passphrase: "{{ git_ssh_key_passphrase }}"
-  tags: [git, repos]
 
+# retrieve agent
+...
+  vars:
+    git_ssh_auth_sock: "{{ cmd_eval_ssh_agent['stdout'] | from_json | json_query('SSH_AUTH_SOCK') }}"
+...
 
 # Handler
 - name: "Stop ssh-agent"

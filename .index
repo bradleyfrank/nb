@@ -38,3 +38,4 @@ tmux-status
 gh-auth.bash.md
 24-bit-color.sh
 bfetch
+findproc

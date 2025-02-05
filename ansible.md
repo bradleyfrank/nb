@@ -160,3 +160,23 @@ Find and print variables, dynamically:
       loop: "{{ query('ansible.builtin.varnames', '^op_.+$') }}"
       no_log: true
 ```
+
+Download GitHub gitignore templates:
+
+```yaml
+    - name: "Create temp download directory"
+      ansible.builtin.tempfile:
+        state: directory
+      register: git_temp_dir
+    - name: "Download GitHub's gitignore templates"
+      ansible.builtin.get_url:
+        url: "{{ git_github_gitignore_repo }}/{{ item }}.gitignore"
+        dest: "{{ git_temp_dir['path'] }}/{{ item | basename }}.gitignore"
+        mode: "0644"
+      loop: "{{ git_github_gitignore_templates }}"
+    - name: "Assemble gitignore templates"
+      ansible.builtin.assemble:
+        src: "{{ git_temp_dir['path'] }}"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/git/ignore"
+        delimiter: "\n"
+```
